@@ -1,0 +1,109 @@
+﻿@using Mvc.Controls
+@using Mvc.Web.Test.Models
+@model AsyncDropdownModel
+
+
+<script>
+
+    var maninpulateSend = function (json) {
+
+        alert("<p><strong>Going to send:</strong></p><p><small>" + JSON.stringify(json, null, "\t") + "</small></p>", "ManipulateSend callback", "success");
+        return json;
+    };
+
+
+
+    function onComplete(status) {
+        //if (data) {
+        //    msg = "<small>" + JSON.stringify(data, null, "\t") + "</small>";
+        //    alert(msg, "Successfull onComplete callback", "info");
+        //}
+        //if (error) {
+        //    msg = "<p><strong>Got Error:</strong>></p><p>" + error + "</p>";
+        //    alert(msg, "Error onComplete callback", "info");
+        //}
+
+        var msg = "<small>" + status + "</small>";
+        alert(msg, "onComplete callback", "info");
+    }
+
+    function onSuccess(data) {
+        data.push({ Text: "added Item", Value: "" });
+        msg = "<p><strong>Received data was modified</strong></p><p><small>" + JSON.stringify(data, null, "\t") + "</small></p>";
+        alert(msg, "OnSuccess callback", "success");
+    }
+
+    function onFailure(responseText, responseStatus, statusText) {
+        var obj = {
+            responseText: responseText,
+            responseStatus: responseStatus,
+            statusText: statusText
+        }
+        msg = "<p><strong>Got Error:</strong>></p><p><small>" + JSON.stringify(obj, null, "\t") + "</small></p>"
+        alert(msg, "OnFailure callback", "error");
+    }
+
+    function StreetChange() {
+        var msg = "<small>Street Changed</small>";
+        alert(msg, "StreetChange callback", "info");
+    }
+
+</script>
+
+
+
+@using (Html.BeginForm("AsyncDropdown", "Home", FormMethod.Post))
+{
+
+<div class="form-horizontal">
+    <h4>
+        HTML Controls
+    </h4>
+    @Html.DropDownListCustom(input: new DropdownInput<AsyncDropdownModel>()
+    {
+    ModelProperty = m => m.SelectedCountry,
+    DataUri = Url.Action("GetStreets", "Home"),
+    DataUriParamName = "city",
+    DataUriParamValue = "Houston",
+    PlaceHolder = "Please select a Street",
+    LabelText = "Streets of Houston",
+    ShowLabel = true,
+    Access =  ControlAccess.Hide
+    }, options: new SourceCallBackOptions()
+    {
+    HttpMethod = HttpVerb.POST,
+    //ManipulateDataSend = "maninpulateSend",
+    //OnCompleteGetData = "onComplete",
+    //OnFailureGetData = "onFailure",
+    //OnSuccessGetData = "onSuccess",
+    OnChange = "StreetChange"
+
+    })
+    <h4>
+        jQuery Controls
+    </h4>
+
+    @Html.DropDownListJQCustom(input: new DropdownInput<AsyncDropdownModel>()
+    {
+    ModelProperty = m => m.SelectedCountryJQ,
+    DataUri = Url.Action("GetStreets", "Home"),
+    DataUriParamName = "city",
+    DataUriParamValue = "Houston",
+    PlaceHolder = "Please select a Street",
+    LabelText = "Streets of Houston",
+    ShowLabel = true
+    }, options: new SourceCallBackOptions()
+    {
+    HttpMethod = HttpVerb.POST,
+    //ManipulateDataSend = "maninpulateSend",
+    //OnCompleteGetData = "onComplete",
+    //OnFailureGetData = "onFailure",
+    //OnSuccessGetData = "onSuccess",
+    OnChange = "StreetChange"
+
+    })
+</div>
+<input type="submit" value="Submit" class="btn btn-primary" />
+
+}
+

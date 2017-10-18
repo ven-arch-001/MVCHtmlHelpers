@@ -1,0 +1,182 @@
+﻿
+CREATE TABLE [dbo].[Gender](
+	[GenderId] [int] IDENTITY(1,1) NOT NULL,
+	[Code] [char](1) NOT NULL,
+	[Text] [varchar](50) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[GenderId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+
+
+CREATE TABLE [dbo].[State](
+	[StateId] [int] IDENTITY(1,1) NOT NULL,
+	[Code] [char](2) NOT NULL,
+	[Text] [varchar](50) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[StateId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+
+
+
+
+CREATE TABLE [dbo].[User](
+	[UserId] [int] IDENTITY(1,1) NOT NULL,
+	[LastName] [varchar](50) NOT NULL,
+	[FirstName] [varchar](50) NULL,
+	[SSN] [varchar](50) NOT NULL,
+	[Address] [varchar](50) NULL,
+	[BirthDate] [date] NOT NULL,
+	[GenderId] [int] NOT NULL,
+	[StateId] [int] NOT NULL,
+	[UpdateDate] [datetime] NULL,
+	[UpdateBy] [varchar](50) NULL,
+	[IsActive] [bit] NOT NULL,
+ CONSTRAINT [PK__User__1788CC4CA11B8DD6] PRIMARY KEY CLUSTERED 
+(
+	[UserId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+ALTER TABLE [dbo].[User] ADD  DEFAULT ((0)) FOR [IsActive]
+GO
+
+ALTER TABLE [dbo].[User]  WITH CHECK ADD  CONSTRAINT [FK_User_Gender] FOREIGN KEY([GenderId])
+REFERENCES [dbo].[Gender] ([GenderId])
+GO
+
+ALTER TABLE [dbo].[User] CHECK CONSTRAINT [FK_User_Gender]
+GO
+
+ALTER TABLE [dbo].[User]  WITH CHECK ADD  CONSTRAINT [FK_User_State] FOREIGN KEY([StateId])
+REFERENCES [dbo].[State] ([StateId])
+GO
+
+ALTER TABLE [dbo].[User] CHECK CONSTRAINT [FK_User_State]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--https://www.sqlshack.com/how-to-generate-random-sql-server-test-data-using-t-sql/
+
+insert into Gender Values ('M', 'Male')
+insert into Gender Values ('F', 'Female')
+insert into Gender Values ('N', 'Not Specified')
+
+
+Insert into State Values('AL', 'Alabama')
+Insert into State Values('AK', 'Alaska')
+Insert into State Values('AZ', 'Arizona')
+Insert into State Values('AR', 'Arkansas')
+Insert into State Values('CA', 'California')
+Insert into State Values('CO', 'Colorado')
+Insert into State Values('CT', 'Connecticut')
+Insert into State Values('DE', 'Delaware')
+Insert into State Values('FL', 'Florida')
+Insert into State Values('GA', 'Georgia')
+Insert into State Values('HI', 'Hawaii')
+Insert into State Values('ID', 'Idaho')
+Insert into State Values('IL', 'Illinois')
+Insert into State Values('IN', 'Indiana')
+Insert into State Values('IA', 'Iowa')
+Insert into State Values('KS', 'Kansas')
+Insert into State Values('KY', 'Kentucky')
+Insert into State Values('LA', 'Louisiana')
+Insert into State Values('ME', 'Maine')
+Insert into State Values('MD', 'Maryland')
+Insert into State Values('MA', 'Massachusetts')
+Insert into State Values('MI', 'Michigan')
+Insert into State Values('MN', 'Minnesota')
+Insert into State Values('MS', 'Mississippi')
+Insert into State Values('MO', 'Missouri')
+Insert into State Values('MT', 'Montana')
+Insert into State Values('NE', 'Nebraska')
+Insert into State Values('NV', 'Nevada')
+Insert into State Values('NH', 'New Hampshire')
+Insert into State Values('NJ', 'New Jersey')
+Insert into State Values('NM', 'New Mexico')
+Insert into State Values('NY', 'New York')
+Insert into State Values('NC', 'North Carolina')
+Insert into State Values('ND', 'North Dakota')
+Insert into State Values('OH', 'Ohio')
+Insert into State Values('OK', 'Oklahoma')
+Insert into State Values('OR', 'Oregon')
+Insert into State Values('PA', 'Pennsylvania')
+Insert into State Values('RI', 'Rhode Island')
+Insert into State Values('SC', 'South Carolina')
+Insert into State Values('SD', 'South Dakota')
+Insert into State Values('TN', 'Tennessee')
+Insert into State Values('TX', 'Texas')
+Insert into State Values('UT', 'Utah')
+Insert into State Values('VT', 'Vermont')
+Insert into State Values('VA', 'Virginia')
+Insert into State Values('WA', 'Washington')
+Insert into State Values('WV', 'West Virginia')
+Insert into State Values('WI', 'Wisconsin')
+Insert into State Values('WY', 'Wyoming')
+
+
+
+
+
+
+
+
+
+--Insert into User Table
+
+
+with randowvalues
+    as(
+		select 1 id, CAST(RAND(CHECKSUM(NEWID()))*3 as int) + 1 GenderId,  CAST(RAND(CHECKSUM(NEWID()))*50 as int) + 1 StateId,
+		DATEADD(day, (ABS(CHECKSUM(NEWID())) % 65530), 0) BirthDay
+		union  all
+		select id + 1, CAST(RAND(CHECKSUM(NEWID()))*3 as int) + 1  GenderId, CAST(RAND(CHECKSUM(NEWID()))*50 as int) + 1  StateId,
+		DATEADD(day, (ABS(CHECKSUM(NEWID())) % 65530), 0) BirthDay
+		from randowvalues
+
+		where 
+          id < 1000000
+      )
+  
+	Insert into [User]
+    select 
+	'LName' + Cast(Id as Varchar) LName, 
+	'FName' + Cast(Id as Varchar) FName, 
+	'SSN' + Cast(Id as Varchar) SSN, 
+	'Address' + Cast(Id as Varchar) Address, 
+	BirthDay,
+	GenderId,
+	StateId,
+	getdate() UpdateDate,
+	'admin' UpdateBy,
+	1 IsActive
+    from randowvalues 
+    OPTION(MAXRECURSION 0)
+
+	 
+ --DBCC CHECKIDENT ('[User]', RESEED, 0);
+ --Select * from [User]
+  

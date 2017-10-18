@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="TestDB" Class="TestDBDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\TestDB.mdf;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="TestDBConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Gender" Member="Genders">
+    <Type Name="Gender">
+      <Column Name="GenderId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Code" Type="System.Char" DbType="Char(1) NOT NULL" CanBeNull="false" />
+      <Column Name="Text" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="Gender_User" Member="Users" ThisKey="GenderId" OtherKey="GenderId" Type="User" />
+    </Type>
+  </Table>
+  <Table Name="dbo.State" Member="States">
+    <Type Name="State">
+      <Column Name="StateId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Code" Type="System.String" DbType="Char(2) NOT NULL" CanBeNull="false" />
+      <Column Name="Text" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="State_User" Member="Users" ThisKey="StateId" OtherKey="StateId" Type="User" />
+    </Type>
+  </Table>
+  <Table Name="dbo.[User]" Member="Users">
+    <Type Name="User">
+      <Column Name="UserId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="LastName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="FirstName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="SSN" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Address" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="BirthDate" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="GenderId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="StateId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UpdateDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="UpdateBy" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="Gender_User" Member="Gender" ThisKey="GenderId" OtherKey="GenderId" Type="Gender" IsForeignKey="true" />
+      <Association Name="State_User" Member="State" ThisKey="StateId" OtherKey="StateId" Type="State" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>

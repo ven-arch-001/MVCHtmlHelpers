@@ -1,0 +1,82 @@
+﻿
+@using Mvc.Controls
+@using Mvc.Web.Test.Models
+@model MultipleDependenciesModel
+
+<script>
+    function manipulateData(data) {
+        return {
+            make: $("#SelectedMake").val(),
+            //year: $("#SelectedYear").val()
+            year: $("#SelectedYear option:selected").text()
+        }
+    }
+
+    $(function () {
+        $(".parentDd").change(function () {
+            if ($("#SelectedMake").val() && $("#SelectedYear").val()) {
+                $("#makeYear").val(1);
+
+            }
+            else {
+                $("#makeYear").val(null);
+            }
+            $("#makeYear").trigger("change");
+        })
+    })
+
+</script>
+
+@using (Html.BeginForm("MultipleDependencies", "Home", FormMethod.Post))
+{
+
+    <div class="form-horizontal">
+        @*<div class="form-group">
+                <label>MAKE</label>
+                @Html.DropDownListFor(m => m.SelectedMake, Model.Makes, "Please select a Make", new { @class = "form-control parentDd" })
+                @Html.ValidationMessageFor(m => m.SelectedMake)
+            </div>*@
+
+        @Html.DropDownListCustom(input: new DropdownInput<MultipleDependenciesModel>()
+   {
+       ModelProperty = m => m.SelectedMake,
+       DataUri = Url.Action("GetMakes", "Home"),
+       PlaceHolder = "Please select a Make",
+       DataHtmlAttributes = new { @class = "parentDd" },
+       ShowLabel = true,
+   }, options: new SourceCallBackOptions()
+   {
+       HttpMethod = HttpVerb.POST
+   })
+        @Html.DropDownListCustom(input: new DropdownInput<MultipleDependenciesModel>()
+   {
+       ModelProperty = m => m.SelectedYear,
+       DataUri = Url.Action("GetYears", "Home"),
+       PlaceHolder = "Please select a Year",
+       DataHtmlAttributes = new { @class = "parentDd" },
+       ShowLabel = true
+   }, options: new SourceCallBackOptions()
+   {
+       HttpMethod = HttpVerb.POST
+   })
+
+        <input id="makeYear" type="hidden" />
+
+        @Html.CascadingDropDownList(input:  new CascadingInput<MultipleDependenciesModel>()
+   {
+       ModelProperty = m => m.SelectedModel,
+       IdAttr = "SelectedModel",
+       TriggeredById = "makeYear",
+       DataUri = Url.Action("GetModel", "Home"),
+       DataUriParamName = "make",
+       DisabledWhenParentNotSelected = true,
+       PlaceHolder = "Please select a Model"
+   }, options: new SourceCallBackOptions()
+   {
+       ManipulateDataSend = "manipulateData"
+   })
+    </div>
+
+    <input type="submit" value="Submit" class="btn btn-primary" />
+
+}

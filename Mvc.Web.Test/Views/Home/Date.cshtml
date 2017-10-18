@@ -1,0 +1,35 @@
+﻿
+@using Mvc.Controls
+@using Mvc.Web.Test.Models
+@model DateModel
+
+
+<script>
+
+    function dateChange(e) {
+        var msg = "<small>" + e + "</small>";
+        alert(msg, "dateChange callback", "info");
+    }
+</script>
+
+
+
+@using (Html.BeginForm("DateControl", "Home", FormMethod.Post))
+{
+
+    <div class="form-horizontal">
+
+        @Html.DateCustom(input: new DateInput<DateModel>()
+   {
+       ModelProperty = m => m.SelectedDate,
+       ShowLabel = true,
+       Access = ControlAccess.Edit
+   }, options: new TextCallBackOptions()
+   {
+        OnChange = "dateChange"
+   })
+    </div>
+
+    <input type="submit" value="Submit" class="btn btn-primary" />
+}
+

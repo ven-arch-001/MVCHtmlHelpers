@@ -1,0 +1,53 @@
+﻿
+@using Mvc.Controls
+@using Mvc.Web.Test.Models
+@model TextModel
+
+
+<script>
+
+    function textChange(e) {
+        var msg = "<small>" + e + "</small>";
+        alert(msg, "textChange callback", "info");
+    }
+
+
+    function textAreaChange(e) {
+        var msg = "<small>" + e + "</small>";
+        alert(msg, "textAreaChange callback", "info");
+    }
+</script>
+
+
+
+@using (Html.BeginForm("TextControl", "Home", FormMethod.Post))
+{
+
+    <div class="form-horizontal">
+
+        @Html.TextBoxCustom(input: new TextInput<TextModel>()
+       {
+           ModelProperty = m => m.TextBox,
+           ShowLabel = true
+       }, options: new TextCallBackOptions()
+       {
+           OnChange = "textChange"
+       })
+
+
+
+        @Html.TextBoxCustom(input: new TextInput<TextModel>()
+   {
+       ModelProperty = m => m.TextArea,
+       ShowLabel = true,
+       Rows = 10,
+       WidthPerCent = 50,
+       Access = ControlAccess.Edit
+   }, options: new TextCallBackOptions()
+   {
+       OnChange = "textAreaChange"
+   })
+    </div>
+
+        <input type="submit" value="Submit" class="btn btn-primary" />
+}

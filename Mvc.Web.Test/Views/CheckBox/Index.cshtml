@@ -1,0 +1,38 @@
+﻿@using Mvc.Controls
+@using Mvc.Web.Test.Models
+@using Mvc.Web.Test.ViewModel
+@model CheckBoxVM
+
+
+
+@using (Html.BeginForm("Submit", "CheckBox", FormMethod.Post))
+{
+
+    <div class="form-horizontal">
+        <h4>
+            Check Box
+        </h4>
+        @Html.CheckBoxCustom(input: new CheckBoxInput<CheckBoxVM>()
+   {
+       ModelProperty = m => m.CheckBox,
+       PlaceHolder = "Please select a Street",
+       
+       ShowLabel = true,
+       Access = ControlAccess.Edit
+   }, options: new CheckCallBackOptions()
+   {       
+       OnChange = "CheckBoxChange"
+
+   })
+
+    </div>
+    <input type="submit" value="Submit" class="btn btn-primary" />
+
+}
+
+<script type="text/javascript">
+    function CheckBoxChange(e) {
+        var msg = "<small>Check Box Changed</small>";
+        alert(msg, "Check callback", "info");
+    }
+</script>

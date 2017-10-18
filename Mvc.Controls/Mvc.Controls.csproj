@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9AFCA1AB-7B5C-49C0-A067-EE5393069686}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Mvc.Controls</RootNamespace>
+    <AssemblyName>Mvc.Controls</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Annotations, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ComponentModel.Annotations.4.4.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.ComponentModel.Primitives, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ComponentModel.Primitives.4.3.0\lib\net45\System.ComponentModel.Primitives.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Linq.Dynamic.Core, Version=0.0.0.0, Culture=neutral, PublicKeyToken=0f07ec44de6ac832, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Linq.Dynamic.Core.1.0.7.9\lib\net40\System.Linq.Dynamic.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Reflection.TypeExtensions, Version=4.1.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reflection.TypeExtensions.4.4.0\lib\net461\System.Reflection.TypeExtensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.1.0.20105.408\lib\net40\System.Web.Helpers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.3.0.20105.1\lib\net40\System.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.1.0.20105.408\lib\net40\System.Web.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.1.0.20105.408\lib\net40\System.Web.WebPages.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.1.0.20105.408\lib\net40\System.Web.WebPages.Deployment.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.1.0.20105.408\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CheckBoxlistJQ\CheckBoxListExtensionsJQ.cs" />
+    <Compile Include="CheckBox\CheckBoxExtensions.cs" />
+    <Compile Include="DataTable\Binding\DataTablesHelper.cs" />
+    <Compile Include="DataTable\Binding\DataTablesModelBinder.cs" />
+    <Compile Include="DataTable\Binding\DataTablesResult.cs" />
+    <Compile Include="DataTable\Infrastructure\Configuration\DataTableConfigVm.cs" />
+    <Compile Include="DataTable\Infrastructure\Configuration\DataTablesAttribute.cs" />
+    <Compile Include="DataTable\Infrastructure\Configuration\DataTablesAttributeBase.cs" />
+    <Compile Include="DataTable\Infrastructure\Configuration\DataTablesColumnsReflectionHelper.cs" />
+    <Compile Include="DataTable\Infrastructure\Configuration\DataTablesExcludeAttribute.cs" />
+    <Compile Include="DataTable\Infrastructure\Configuration\DataTablesParam.cs" />
+    <Compile Include="DataTable\Infrastructure\Configuration\DataTablesRowIdAttribute.cs" />
+    <Compile Include="DataTable\Infrastructure\Export\DataTableExportParam.cs" />
+    <Compile Include="DataTable\Infrastructure\Filter\ColumnFilterSettingsVm.cs" />
+    <Compile Include="DataTable\Infrastructure\Filter\DataTablesFilterAttribute.cs" />
+    <Compile Include="DataTable\Infrastructure\Filter\DataTablesFiltering.cs" />
+    <Compile Include="DataTable\Infrastructure\Filter\FilterDef.cs" />
+    <Compile Include="DataTable\Infrastructure\Filter\LengthMenuVm.cs" />
+    <Compile Include="DataTable\Infrastructure\Models\ArrayOutputType.cs" />
+    <Compile Include="DataTable\Infrastructure\Models\ColDef.cs" />
+    <Compile Include="DataTable\Infrastructure\Models\DataTablesResponseData.cs" />
+    <Compile Include="DataTable\Infrastructure\Models\Language.cs" />
+    <Compile Include="DataTable\Infrastructure\Models\Paginate.cs" />
+    <Compile Include="DataTable\Infrastructure\Models\ResponseOptions.cs" />
+    <Compile Include="DataTable\Infrastructure\Models\SortDirection.cs" />
+    <Compile Include="DataTable\Infrastructure\Processing\StringTransformers.cs" />
+    <Compile Include="DataTable\Infrastructure\Processing\TypeFilters.cs" />
+    <Compile Include="DataTable\Infrastructure\Reflection\DataTablesPropertyInfo.cs" />
+    <Compile Include="DataTable\Infrastructure\Reflection\DataTablesTypeInfo.cs" />
+    <Compile Include="DataTable\Infrastructure\Reflection\DataTablesTypeInfoHelper.cs" />
+    <Compile Include="DataTable\Infrastructure\Reflection\StaticReflectionHelper.cs" />
+    <Compile Include="DataTable\Infrastructure\Serialization\Raw.cs" />
+    <Compile Include="DataTable\Infrastructure\Serialization\RawConverter.cs" />
+    <Compile Include="DataTable\Infrastructure\Util\ResourceHelper.cs" />
+    <Compile Include="DataTable\Infrastructure\Util\TransformTypeInfo.cs" />
+    <Compile Include="DataTable\Infrastructure\ViewModel\IDataTable.cs" />
+    <Compile Include="Date\DateExtensionsJQ.cs" />
+    <Compile Include="DropdownJQ\CascadingDropDownListExtensionsJQ.cs" />
+    <Compile Include="DropdownJQ\DropDownListExtensionsJQ.cs" />
+    <Compile Include="Dropdown\CascadingDropDownListExtensions.cs" />
+    <Compile Include="Dropdown\DropDownListExtensions.cs" />
+    <Compile Include="Infrastructure\CallBackOptions.cs" />
+    <Compile Include="Infrastructure\ControlHelpers.cs" />
+    <Compile Include="Infrastructure\ControlInputs.cs" />
+    <Compile Include="Label\LabelExtensions.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TextBox\TextBoxExtensions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Shared\DataTable.cshtml" />
+    <None Include="App.Config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Views\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Mvc.Common\Mvc.Common.csproj">
+      <Project>{f4f60bd5-eb2a-4aac-b0a9-cdf86a63606b}</Project>
+      <Name>Mvc.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

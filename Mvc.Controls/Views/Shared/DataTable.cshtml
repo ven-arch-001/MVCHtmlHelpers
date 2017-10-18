@@ -1,0 +1,285 @@
+﻿@using System.Linq
+@using Mvc.Controls.DataTable.Infrastructure
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@model Mvc.Controls.DataTable.Infrastructure.DataTableConfigVm
+<table id="@Model.Id" class="display @(Model.TableClass ?? DataTableConfigVm.DefaultTableClass ?? "")" @Html.Raw(Model.FixedLayout ? "style='table-layout:fixed'" : "")>
+    <thead>
+        @if (Model.UseColumnFilterPlugin)
+        {
+            <tr>
+                @foreach (var column in Model.Columns)
+                {
+                    <th>@column.DisplayName</th>
+                }
+            </tr>
+        }
+        @if (!Model.HideHeaders)
+        {
+            <tr>
+                @foreach (var column in Model.Columns)
+                {
+                    <th class="@column.CssClassHeader">@column.DisplayName</th>
+                }
+            </tr>
+        }
+    </thead>
+    <tbody>
+        <tr>
+            <td colspan="@Model.Columns.Count()" class="dataTables_empty">
+                Loading data
+            </td>
+        </tr>
+    </tbody>
+</table>
+<div class="modal fade" id="@Model.ViewClick" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h3 class="modal-title">Details</h3>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-primary">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="@Model.EditClick" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h3 class="modal-title">Edit Template</h3>
+            </div>
+            <div class="modal-body">
+                @foreach (var column in Model.ColumnsEdit)
+                {
+
+                    <div class="row dataTable">
+                        <div class="col-md-12">
+                            @switch (column.EditControl)
+                            {
+                                case EditControl.TextBox:
+                                    @Html.TextBoxCustom(new TextInput<string>()
+                               {
+                                   IdAttr = column.Name,
+                                   ShowLabel = true
+                               }, null);
+                                    break;
+                                case EditControl.DropDown:
+                                    @Html.DropDownListJQCustom(new DropdownInput<string>()
+                               {
+                                   IdAttr = column.Name,
+                                   DataUri = column.DataUri,
+                                   ShowLabel = true
+                               }, null);
+                                    break;
+
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="modal-footer">
+                @*onclick='@(Model.SaveClick + "(" + @CustomButtonFunction.Edit + ")")'*@
+                <button type="button" id="saveRecord" data-dismiss="modal" class="btn btn-success">Save</button>
+                <button type="button" data-dismiss="modal" class="btn btn-primary">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    (function setDataTable()
+    {
+        if (!window.jQuery || !$.fn.DataTable) {
+            setTimeout(setDataTable, 100);
+            return;
+        }
+        var $table = $('#@Model.Id');
+
+        @{
+                                    var options = new JObject();
+                                    options["aaSorting"] = new JRaw(Model.ColumnSortingString);
+                                    options["bProcessing"] = true;
+                                    options["bStateSave"] = Model.StateSave;
+                                    options["bServerSide"] = true;
+                                    options["bFilter"] = Model.Filter;
+                                    options["sDom"] = Model.Dom;
+                                    if (Model.LengthMenu != null)
+                                    {
+                                        options["lengthMenu"] = new JRaw(Model.LengthMenu);
+                                    }
+                                    if (Model.PageLength.HasValue)
+                                    {
+                                        options["pageLength"] = Model.PageLength;
+                                    }
+                                    options["bAutoWidth"] = Model.AutoWidth;
+                                    options["sAjaxSource"] = Model.AjaxUrl;
+                                    //if (Model.TableTools)
+                                    //{
+                                    //    options["oTableTools"] = new JRaw("{ 'sSwfPath': '//cdn.datatables.net/tabletools/2.2.1/swf/copy_csv_xls_pdf.swf' }");
+                                    //}
+                                    options["fnServerData"] = new JRaw(
+                                        "function(sSource, aoData, fnCallback) { " +
+                                        "    var ajaxOptions = { 'dataType': 'json', 'type': 'POST', 'url': sSource, 'data': aoData, 'success': fnCallback }; " +
+                                        (Model.AjaxErrorHandler == null ? "" : ("ajaxOptions['error'] = " + Model.AjaxErrorHandler) + "; ") +
+                                        "    $.ajax(ajaxOptions);" +
+                                        "}");
+                                    options["aoColumnDefs"] = new JRaw(Model.ColumnDefsString);
+                                    options["aoSearchCols"] = Model.SearchCols;
+                                    if (Model.JsOptions.Any())
+                                    {
+                                        foreach (var jsOption in Model.JsOptions)
+                                        {
+                                            options[jsOption.Key] = new JRaw(jsOption.Value);
+                                        }
+                                    }
+                                    if (!string.IsNullOrWhiteSpace(Model.Language))
+                                    {
+                                        options["oLanguage"] = new JRaw(Model.Language);
+                                    }
+                                    if (!string.IsNullOrWhiteSpace(Model.DrawCallback))
+                                    {
+                                        options["fnDrawCallback"] = new JRaw(Model.DrawCallback);
+                                    }
+
+                                }
+
+
+
+
+        var dt = $table.dataTable(@Html.Raw(options.ToString(Formatting.Indented)));
+        @*@if (Model.UseColumnFilterPlugin)
+                                {
+                                    @Html.Raw("dt.columnFilter(" + Model.ColumnFilterVm + ");")
+                                }*@
+
+        @if (Model.GlobalJsVariableName != null)
+                            {
+                                @Html.Raw("window['" + Model.GlobalJsVariableName + "'] = dt;")
+                            }
+    })();
+
+
+
+    var @Model.ViewClick = function () {
+        var table = $('#@Model.Id').DataTable();
+        var ctrl = $(event.target);
+        var tr = ctrl.closest('tr');
+        var row = table.row(tr);
+        var data = row.data();
+        var columns = table.columns();
+
+        var modal = $("#@Model.ViewClick");
+        var contentHtml = "";
+        $.each(data, function( index, value ) {
+            var col = table.column(index);
+            if(col.visible() == true)
+            {   contentHtml += '<div class="row dataTable">';
+                contentHtml += '<div class="col-md-4"><label class="control-label">' + $(col.header()).text() + '</label></div>' +
+                '<div class="col-md-8"><label class="">' + value + '</label></div>';
+                contentHtml += '</div>';
+            }
+        });
+        $('#@Model.ViewClick').find('.modal-body').html(contentHtml);
+        $('#@Model.ViewClick').modal("show");
+    };
+
+    var @Model.EditDataRecord = {};
+
+    var @Model.EditClick = function (functionality) {
+        var table = $('#@Model.Id').DataTable();
+        var ctrl = $(event.target);
+        var tr = ctrl.closest('tr');
+        var row = table.row(tr);
+        //var data = row.data();
+        var columns = table.columns();
+
+        var modal = $("#@Model.EditClick");
+
+
+        modal.find("#saveRecord").click(function() {
+            @(Model.SaveClick + "(functionality)");
+        });
+
+        //Loop through the controls on the edit form and assign the values
+        var data = @Model.DataArgFetchCall;
+        @Model.EditDataRecord = data;
+
+        $('#@Model.EditClick').modal("show");
+    };
+
+    var @Model.SaveClick = function (functionality) {
+        var jsonToSend = JSON.parse(@Model.EditDataRecord);
+        var modal = $("#@Model.EditClick");
+        //Read the data from the controls
+        $.each(jsonToSend, function(name, value){
+            jsonToSend[name] = modal.find(name).val();
+        });
+
+        jsonToSend.RowFunction = functionality;
+        var url = @Model.AjaxPostUrl;
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: jsonToSend,
+            cache : false,
+            dataType: 'json',
+            success: function()
+            {
+                $('#@Model.EditClick').modal("close");
+            },
+            error: @Model.AjaxErrorHandler
+        });
+
+    //Post the data back to the server
+
+    }
+
+    var @Model.DeleteClick = function () {
+        var table = $('#@Model.Id').DataTable();
+        var ctrl = $(event.target);
+        var tr = ctrl.closest('tr');
+        var row = table.row(tr);
+        //var data = row.data();
+        var jsonToSend = @Model.DataArgFetchCall;
+        jsonToSend.RowFunction = @CustomButtonFunction.Delete;
+        var url = @Model.AjaxPostUrl;
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: jsonToSend,
+            cache : false,
+            dataType: 'json',
+            success: function()
+            {
+                $('#@Model.EditClick').modal("close");
+            },
+            error: @Model.AjaxErrorHandler
+        });
+
+
+    };
+
+
+    var @Model.DataArgFetch = function () {
+        var table = $('#@Model.Id').DataTable();
+        var ctrl = $(event.target);
+        var tr = ctrl.closest('tr');
+        var row = table.row(tr);
+        var data = row.data();
+        return data;
+    };
+</script>
+@if (Model.PrintScript)
+{
+    @Html.Raw("<div>" + options.ToString(Formatting.Indented) + "</div>")
+}
+
+
+

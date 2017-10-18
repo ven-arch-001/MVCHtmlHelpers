@@ -1,0 +1,81 @@
+﻿@using Mvc.Controls.DataTable.Infrastructure.Models
+@using Mvc.Controls.DataTable.Infrastructure.Serialization
+@using Mvc.Controls.DataTable.Infrastructure
+@using Mvc.Controls.DataTable
+@using Mvc.Web.Test.Controllers
+
+<div class="container-fluid">
+    <div class="row-fluid">         
+        <div class="col-md-10">
+            <h2>Include</h2>
+            @{
+                var vmInclude = Html.DataTableVm("table-usersInclude", (DataTableController h) => h.GetUsersInclude(null));
+
+                vmInclude.UseColumnFilterPlugin = false;
+                vmInclude.StateSave = false;
+
+                vmInclude.PageLength = 5; //... and set a default
+                vmInclude.ShowPageSizes = false;
+                vmInclude.ColVis = true;
+                vmInclude.ShowFilterInput = true;
+                vmInclude.Filter = true;
+                vmInclude.HideHeaders = true;
+                vmInclude.TableTools = false;
+                vmInclude.HideHeaders = false;
+                vmInclude.PrintScript = false;
+                vmInclude.AddButtoncolumn(new CustomButton() { Functionality = CustomButtonFunction.View, CallBack = "includeView" });
+                vmInclude.AddButtoncolumn(new CustomButton() { Functionality = CustomButtonFunction.Edit });
+                vmInclude.AddButtoncolumn(new CustomButton() { Functionality = CustomButtonFunction.Delete });
+            }
+            @Html.Partial("DataTable", vmInclude)
+        </div>
+
+        <div class="col-md-10">
+            <h2>Inner Join</h2>
+            @{
+                var vmInner = Html.DataTableVm("table-usersInner", (DataTableController h) => h.GetUsersInnerJoin(null));
+
+                vmInner.UseColumnFilterPlugin = false;
+                vmInner.StateSave = false;
+
+                vmInner.PageLength = 5; //... and set a default
+                vmInner.ShowPageSizes = false;
+                vmInner.ColVis = false;
+                vmInner.ShowFilterInput = false;
+                vmInner.Filter = true;
+                vmInner.HideHeaders = true;
+                vmInner.TableTools = false;
+                vmInner.HideHeaders = false;
+                vmInner.AddButtoncolumn(new CustomButton() { Functionality = CustomButtonFunction.View });
+            }
+            @Html.Partial("DataTable", vmInner)
+        </div>
+
+
+        <div class="col-md-10">
+            <h2>Outer Join</h2>
+            @{
+                var vmOuter = Html.DataTableVm("table-usersOuter", (DataTableController h) => h.GetUsersOuterJoin(null));
+
+                vmOuter.UseColumnFilterPlugin = false;
+                vmOuter.StateSave = true;
+
+                vmOuter.PageLength = 5; //... and set a default
+                vmOuter.ShowPageSizes = false;
+                vmOuter.ColVis = false;
+                vmOuter.ShowFilterInput = false;
+                vmOuter.Filter = true;
+                vmOuter.HideHeaders = true;
+                vmOuter.TableTools = false;
+                vmOuter.HideHeaders = false;
+            }
+            @Html.Partial("DataTable", vmOuter)
+        </div>
+    </div>
+</div>
+
+<script>
+    function includeView(a) {
+        alert('custom function called.<br/><br/><br/><b>Data Received:</b><br/>' + a.join('<br/>'));
+    };
+</script>

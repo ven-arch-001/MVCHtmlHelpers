@@ -1,0 +1,215 @@
+﻿
+@using Mvc.Controls
+@using Mvc.Web.Test.Models
+@model CascadingDropdownsModel
+<script>
+    //function beforeSend(json)
+    //{
+    //    json.currency = json.country == "US" ? "USD" : "GBP";
+    //    alert("<p><strong>Going to send:</strong></p><p><small>" + JSON.stringify(json, null, "\t") + "</small></p>", "BeforeSend callback", "success");
+    //    return json;
+    //}
+
+
+    var maninpulateSend = function (json) {
+        json.currency = json.country == "US" ? "USD" : "GBP";
+        alert("<p><strong>Going to Manipulate:</strong></p><p><small>" + JSON.stringify(json, null, "\t") + "</small></p>", "ManipulateSend callback", "success");
+        return json;
+    };
+
+    var beforeSend = function (json) {
+        alert("<p><strong>Going to send:</strong></p><p><small>" + JSON.stringify(json, null, "\t") + "</small></p>", "BeforeSend callback", "success");
+    }
+
+    function onComplete(status) {
+        //if (data) {
+        //    msg = "<small>" + JSON.stringify(data, null, "\t") + "</small>";
+        //    alert(msg, "Successfull onComplete callback", "info");
+        //}
+        //if (error) {
+        //    msg = "<p><strong>Got Error:</strong>></p><p>" + error + "</p>";
+        //    alert(msg, "Error onComplete callback", "info");
+        //}
+
+
+        var msg = "<small>" + status + "</small>";
+        alert(msg, "onComplete callback", "info");
+    }
+
+    function onSuccess(data) {
+        data.push({ Text: "added Item", Value: "" });
+        msg = "<p><strong>Received data was modified</strong></p><p><small>" + JSON.stringify(data, null, "\t") + "</small></p>";
+        alert(msg, "OnSuccess callback", "success");
+    }
+
+    function onFailure(responseText, responseStatus, statusText) {
+        var obj = {
+            responseText: responseText,
+            responseStatus: responseStatus,
+            statusText: statusText
+        }
+        msg = "<p><strong>Got Error:</strong>></p><p><small>" + JSON.stringify(obj, null, "\t") + "</small></p>"
+        alert(msg, "OnFailure callback", "error");
+    }
+
+
+    function CountryChange() {
+        var msg = "<small>Country Changed</small>";
+        alert(msg, "CountryChange callback", "info");
+    }
+
+
+    function CityChange() {
+        var msg = "<small>City Changed</small>";
+        alert(msg, "CityChange callback", "info");
+    }
+
+</script>
+<h1>
+    HTML Controls
+</h1>
+@using (Html.BeginForm("CascadingDropDownTest", "Home", FormMethod.Post))
+{
+
+    <div class="form-horizontal">
+        @*<div class="form-group">
+                @Html.DropDownListFor(m => m.SelectedCountry, Model.Countries, "Please select a Country", new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.SelectedCountry)
+            </div>*@
+
+
+        @Html.DropDownListCustom(input: new DropdownInput<CascadingDropdownsModel>()
+   {
+       ModelProperty = m => m.SelectedCountry,
+       DataUri = Url.Action("GetCountries", "Home"),
+       PlaceHolder = "Please select a Country",
+       ShowLabel = true,
+       Access = ControlAccess.Edit
+       
+
+   }, options: new SourceCallBackOptions()
+   {
+       HttpMethod = HttpVerb.POST,
+       OnChange = "CountryChange"
+   })
+
+
+        @Html.CascadingDropDownList(input: new CascadingInput<CascadingDropdownsModel>()
+   {
+       ModelProperty = m => m.SelectedCity,
+       TriggeredByModelProperty = m => m.SelectedCountry,
+       DataUri = Url.Action("GetCities", "Home"),
+       DataUriParamName = "country",
+       PlaceHolder = "Please select a City",
+       DisabledWhenParentNotSelected = true,
+       ShowLabel = true,
+       Access =  ControlAccess.Edit
+       //HtmlAttributes = new { @class = "form-control" },
+       //OptionLabel = "Hello"
+   },
+            options: new SourceCallBackOptions
+            {
+                HttpMethod = HttpVerb.POST,
+                //BeforeDataLoad = "beforeSend",
+                //ManipulateDataSend = "maninpulateSend",
+                //OnCompleteGetData = "onComplete",
+                //OnFailureGetData = "onFailure",
+                //OnSuccessGetData = "onSuccess",
+                OnChange = "CityChange"
+            })
+
+
+
+
+        @Html.CascadingDropDownList(input: new CascadingInput<CascadingDropdownsModel>
+   {
+       ModelProperty = m => m.SelectedStreet,
+       TriggeredByModelProperty = m => m.SelectedCity,
+       DataUri = Url.Action("GetStreets", "Home"),
+       DataUriParamName = "city",
+       PlaceHolder = "Please select a Street",
+       ShowLabel = true,
+       Access = ControlAccess.Edit
+   }, options: null)
+
+    </div>
+
+    <input type="submit" value="Submit" class="btn btn-primary" />
+
+}
+
+
+
+<h1>
+    jQuery Controls
+</h1>
+@using (Html.BeginForm("CascadingDropDownTest", "Home", FormMethod.Post))
+{
+
+    <div class="form-horizontal">
+        @*<div class="form-group">
+                @Html.DropDownListFor(m => m.SelectedCountry, Model.Countries, "Please select a Country", new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.SelectedCountry)
+            </div>*@
+
+
+        @Html.DropDownListJQCustom(input: new DropdownInput<CascadingDropdownsModel>()
+   {
+       ModelProperty = m => m.SelectedCountryJQ,       
+       DataUri = Url.Action("GetCountries", "Home"),
+       PlaceHolder = "Please select a Country",
+       ShowLabel = true,
+       Access = ControlAccess.Edit
+   }, options: new SourceCallBackOptions()
+   {
+       HttpMethod = HttpVerb.POST,
+       OnChange = "CountryChange"
+   })
+
+        @Html.CascadingDropDownListJQ(input: new CascadingInput<CascadingDropdownsModel>()
+   {
+       ModelProperty = m => m.SelectedCityJQ,
+       TriggeredByModelProperty = m => m.SelectedCountryJQ,
+       DataUri = Url.Action("GetCities", "Home"),
+       DataUriParamName = "country",
+       DisabledWhenParentNotSelected = true,
+       ShowLabel = true,
+       PlaceHolder= "Select City",
+       Access = ControlAccess.Edit
+       //HtmlAttributes = new { @class = "form-control" },
+       //OptionLabel = "Hello"
+   },
+            options: new SourceCallBackOptions
+            {
+                HttpMethod = HttpVerb.POST,
+                //BeforeDataLoad = "beforeSend",
+                //ManipulateDataSend = "maninpulateSend",
+                //OnCompleteGetData = "onComplete",
+                //OnFailureGetData = "onFailure",
+                //OnSuccessGetData = "onSuccess",
+                OnChange = "CityChange"
+            })
+
+
+
+
+        @Html.CascadingDropDownListJQ(input: new CascadingInput<CascadingDropdownsModel>
+   {
+       ModelProperty = m => m.SelectedStreetJQ,
+       TriggeredByModelProperty = m => m.SelectedCityJQ,
+       DataUri = Url.Action("GetStreets", "Home"),
+       DataUriParamName = "city",
+       PlaceHolder = "Please select a Street",
+       ShowLabel = true,
+       Access = ControlAccess.Edit
+   }, options: null)
+       
+
+
+ 
+
+    </div>
+
+    <input type="submit" value="Submit" class="btn btn-primary" />
+
+}
