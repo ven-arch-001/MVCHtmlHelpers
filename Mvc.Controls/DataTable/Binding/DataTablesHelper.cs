@@ -13,20 +13,25 @@ namespace Mvc.Controls.DataTable
     public static class DataTablesHelper
     {
         public static DataTableConfigVm DataTableVm<TController, TResult>(this HtmlHelper html, string id,
-            Expression<Func<TController, DataTablesResult<TResult>>> exp, IEnumerable<ColDef> columns = null)
+            Expression<Func<TController, DataTablesResult<TResult>>> exp, Expression<Func<TController,  JsonResult>> postexp = null)
         {
-            if (columns == null || !columns.Any())
-            {
-                columns = typeof(TResult).ColDefs();
-            }
+            IEnumerable<ColDef> columns = typeof(TResult).ColDefs();          
 
-            var mi = exp.MethodInfo();
+            var miData = exp.MethodInfo();
             var controllerName = typeof (TController).Name;
             controllerName = controllerName.Substring(0, controllerName.LastIndexOf("Controller"));
             var urlHelper = new UrlHelper(html.ViewContext.RequestContext);
-            var ajaxUrl = urlHelper.Action(mi.Name, controllerName);
+            var ajaxDataUrl = urlHelper.Action(miData.Name, controllerName);
+            
             var result =  new DataTableConfigVm(id, columns);
-            result.AjaxDataUrl = ajaxUrl;
+            result.AjaxDataUrl = ajaxDataUrl;
+
+            if(postexp != null)
+            {
+                var miPost = postexp.MethodInfo();
+                var ajaxPostUrl = urlHelper.Action(miPost.Name, controllerName);
+                result.AjaxPostUrl = ajaxPostUrl;
+            }
             return result;
         }
 

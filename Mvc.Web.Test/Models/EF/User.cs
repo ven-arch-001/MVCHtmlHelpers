@@ -37,6 +37,8 @@ namespace Mvc.Web.Test.Models.EF
         [StringLength(50)]
         public string UpdateBy { get; set; }
 
+        public bool IsActive { get; set; }
+
         public virtual Gender Gender { get; set; }
 
         public virtual State State { get; set; }

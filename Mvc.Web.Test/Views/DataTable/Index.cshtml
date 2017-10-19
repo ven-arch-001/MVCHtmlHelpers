@@ -9,7 +9,8 @@
         <div class="col-md-10">
             <h2>Include</h2>
             @{
-                var vmInclude = Html.DataTableVm("table-usersInclude", (DataTableController h) => h.GetUsersInclude(null));
+                var vmInclude = Html.DataTableVm("table-usersInclude", (DataTableController h) => h.GetUsersInclude(null),
+                    (DataTableController h) => h.PostData(null));
 
                 vmInclude.UseColumnFilterPlugin = false;
                 vmInclude.StateSave = false;
@@ -23,7 +24,7 @@
                 vmInclude.TableTools = false;
                 vmInclude.HideHeaders = false;
                 vmInclude.PrintScript = false;
-                vmInclude.AddButtoncolumn(new CustomButton() { Functionality = CustomButtonFunction.View, CallBack = "includeView" });
+                vmInclude.AddButtoncolumn(new CustomButton() { Functionality = CustomButtonFunction.View, CallBackEvent = "includeView" });
                 vmInclude.AddButtoncolumn(new CustomButton() { Functionality = CustomButtonFunction.Edit });
                 vmInclude.AddButtoncolumn(new CustomButton() { Functionality = CustomButtonFunction.Delete });
             }

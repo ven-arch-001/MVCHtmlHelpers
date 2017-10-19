@@ -81,7 +81,7 @@ namespace Mvc.Controls.DataTable.Infrastructure
             this.TableTools = true;
             ColumnFilterVm = new ColumnFilterSettingsVm(this);
             this.AjaxErrorHandler =
-                "function(jqXHR, textStatus, errorThrown)" +
+                @"function(jqXHR, textStatus, errorThrown)" +
                 "{ " +
                     "console.log('Error in the data table: ' + textStatus + ' - ' + errorThrown); " +
                     "console.log(arguments);" +
@@ -591,13 +591,13 @@ namespace Mvc.Controls.DataTable.Infrastructure
                 case CustomButtonFunction.Delete:
                     if (string.IsNullOrEmpty(this.AjaxPostUrl))
                     {
-                        throw new Exception("Please set the AjaxPostUrl for default Row Functionality");
+                        throw new Exception("Please set the AjaxPostUrl for Add/Edit/Delete row functionality");
                     }
                     break;
                 case CustomButtonFunction.Custom:
                     if (string.IsNullOrEmpty(button.CallBackEvent))
                     {
-                        throw new Exception("Please set the callback Event");
+                        throw new Exception("Please set the callback Event to add custom button");
                     }
                     break;
             }

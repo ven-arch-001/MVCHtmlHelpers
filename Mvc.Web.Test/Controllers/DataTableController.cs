@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
 
 namespace Mvc.Web.Test.Controllers
@@ -137,9 +138,35 @@ namespace Mvc.Web.Test.Controllers
 
 
         [HttpPost]
-        public DataTablesResult<UserVM> PostData(UserVM data)
+        public JsonResult PostData(UserVM data)
         {
+            var db = new TestDB();
+            User dataEF = new Models.EF.User();
+            AutoMapperServiceConfig.Mapper.Map<UserVM, User>(data, dataEF);
 
+
+
+            switch (data.RowFunction)
+            {                
+                case CustomButtonFunction.Add:
+                    db.Users.Add(dataEF);
+                    break;
+                case CustomButtonFunction.Edit:
+                    db.Users.Attach(dataEF);
+                    break;
+                case CustomButtonFunction.Delete:
+                    dataEF.IsActive = false;
+                    db.Users.Attach(dataEF);
+                    break;
+                case CustomButtonFunction.Custom:
+                    throw new NotImplementedException("Custom not implmented");
+                    
+                default:
+                    throw new Exception("Row Function not set");
+                  
+            }
+
+            return Json(data, JsonRequestBehavior.AllowGet);
         }
     }
 }
