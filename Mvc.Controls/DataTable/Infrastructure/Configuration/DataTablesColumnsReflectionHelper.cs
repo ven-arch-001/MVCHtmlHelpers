@@ -7,21 +7,40 @@ using Mvc.Controls.DataTable.Infrastructure.Reflection;
 namespace Mvc.Controls.DataTable.Infrastructure
 {
     public static class DataTablesColumnsReflectionHelper{
-        public static IEnumerable<ColDef> ColDefs (this Type t)
+        public static IEnumerable<ColDef> ColDefs (this Type type)
         {
-            var propInfos = DataTablesTypeInfo.Properties(t);
+            var propInfos = DataTablesTypeInfo.Properties(type);
             var columnList = new List<ColDef>();
             
             foreach (var dtpi in propInfos)
             {
 
                 var colDef = new ColDef(dtpi.PropertyInfo.Name, dtpi.PropertyInfo.PropertyType);
-                foreach (var att in dtpi.Attributes)
+
+                //Get the datatable attribute decorator
+                var dtAttr = dtpi.Attributes.Where(tt => tt.GetType() == typeof(DataTablesAttribute)).FirstOrDefault();
+                if(dtAttr != null)
                 {
-                    att.ApplyTo(colDef, dtpi.PropertyInfo);
+                    dtAttr.ApplyTo(colDef, dtpi.PropertyInfo);
+                    columnList.Add(colDef);
                 }
-                
-                columnList.Add(colDef);
+                else
+                {
+                    //hide the column
+                    colDef.Visible = false;
+                    colDef.Editable= false;
+                    colDef.Sortable = false;                     
+                    columnList.Add(colDef);
+                }
+
+
+
+
+                //foreach (var att in dtpi.Attributes)
+                //{
+                //    att.ApplyTo(colDef, dtpi.PropertyInfo);
+                //}                
+                //columnList.Add(colDef);
             }
             return columnList.ToArray();
         }

@@ -33,64 +33,69 @@
     </tbody>
 </table>
 <div class="modal fade" id="@Model.ViewClick" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                <h3 class="modal-title">Details</h3>
-            </div>
-            <div class="modal-body">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h3 class="modal-title">Details</h3>
+                </div>
+                <div class="modal-body">
 
-            </div>
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-primary">Close</button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-primary">Close</button>
+                </div>
             </div>
         </div>
     </div>
 </div>
 <div class="modal fade" id="@Model.EditClick" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                <h3 class="modal-title">Edit Template</h3>
-            </div>
-            <div class="modal-body">
-                @foreach (var column in Model.ColumnsEdit)
-                {
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h3 class="modal-title">Edit Template</h3>
+                </div>
+                <div class="modal-body">
+                    @foreach (var column in Model.ColumnsEdit)
+                    {
 
-                    <div class="row dataTable">
-                        <div class="col-md-12">
-                            @switch (column.EditControl)
-                            {
-                                case EditControl.TextBox:
-                                    @Html.TextBoxCustom(new TextInput<string>()
+                        <div class="row dataTable">
+                            <div class="col-md-12">
+                                @switch (column.EditControl)
+                                {
+                                    case EditControl.TextBox:
+                                        @Html.TextBoxCustom(new TextInput<string>()
                                {
                                    IdAttr = column.Name,
                                    ShowLabel = true
                                }, null);
-                                    break;
-                                case EditControl.DropDown:
-                                    @Html.DropDownListJQCustom(new DropdownInput<string>()
+                                        break;
+                                    case EditControl.DropDown:
+                                        @Html.DropDownListJQCustom(new DropdownInput<string>()
                                {
                                    IdAttr = column.Name,
                                    DataUri = column.EditControlDataUri,
                                    ShowLabel = true
                                }, null);
-                                    break;
+                                        break;
 
-                            }
+                                }
+                            </div>
                         </div>
-                    </div>
-                }
-            </div>
-            <div class="modal-footer">
-                @*onclick='@(Model.SaveClick + "(" + @CustomButtonFunction.Edit + ")")'*@
-                <button type="button" id="saveRecord" data-dismiss="modal" class="btn btn-success">Save</button>
-                <button type="button" data-dismiss="modal" class="btn btn-primary">Close</button>
+                    }
+                </div>
+                <div class="modal-footer">
+                    @*onclick='@(Model.SaveClick + "(" + @CustomButtonFunction.Edit + ")")'*@
+                    <button type="button" id="saveRecord" data-dismiss="modal" class="btn btn-success">Save</button>
+                    <button type="button" data-dismiss="modal" class="btn btn-primary">Close</button>
+                </div>
             </div>
         </div>
     </div>
+
 </div>
 
 <script type="text/javascript">
@@ -187,7 +192,12 @@
             }
         });
         $('#@Model.ViewClick').find('.modal-body').html(contentHtml);
-        $('#@Model.ViewClick').modal("show");
+
+        $('#@Model.ViewClick').modal({
+            show: true,
+            keyboard: false,
+            backdrop: 'static'
+        });
     };
 
     var @Model.EditDataRecord = {};
@@ -211,7 +221,12 @@
         var data = @Model.DataArgFetchCall;
         @Model.EditDataRecord = data;
 
-        $('#@Model.EditClick').modal("show");
+
+        $('#@Model.EditClick').modal({
+            show: true,
+            keyboard: false,
+            backdrop: 'static'
+        });
     };
 
     var @Model.SaveClick = function (functionality) {
@@ -235,9 +250,9 @@
                 $('#@Model.EditClick').modal("close");
             },
             error: @Html.Raw(Model.AjaxErrorHandler)
-        });
+            });
 
-    //Post the data back to the server
+        //Post the data back to the server
 
     }
 
@@ -261,7 +276,7 @@
                 $('#@Model.EditClick').modal("close");
             },
             error: @Html.Raw(Model.AjaxErrorHandler)
-        });
+            });
 
 
     };
