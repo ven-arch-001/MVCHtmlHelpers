@@ -76,7 +76,11 @@
 </div>
 
 <script>
-    function includeView(a) {
-        alert('custom function called.<br/><br/><br/><b>Data Received:</b><br/>' + a.join('<br/>'));
+    function includeView(e) {
+        var html = "";
+        $.each(e, function (key, val) {
+            html += key + ": " + val + "<br/>";
+        });
+        alert('custom function called.<br/><br/><br/><b>Data Received:</b><br/>' + html);
     };
 </script>

@@ -210,16 +210,25 @@
         //var data = row.data();
         var columns = table.columns();
 
-        var modal = $("#@Model.EditClick");
+        var modal = $("#@Model.EditClick");      
 
-
-        modal.find("#saveRecord").click(function() {
-            @(Model.SaveClick + "(functionality)");
+        modal.on('click', '#saveRecord', function(){
+             @(Model.SaveClick + "(functionality)");
         });
 
         //Loop through the controls on the edit form and assign the values
         var data = @Model.DataArgFetchCall;
         @Model.EditDataRecord = data;
+
+        $.each(data, function(key, val) {
+            //display the key and value pair
+            if(modal.find("#" + key).length > 0)
+            {
+                modal.find("#" + key).val(val);
+            }
+        });
+
+
 
 
         $('#@Model.EditClick').modal({
@@ -230,12 +239,20 @@
     };
 
     var @Model.SaveClick = function (functionality) {
-        var jsonToSend = JSON.parse(@Model.EditDataRecord);
+        var table = $('#@Model.Id').DataTable();
+        var jsonToSend = @Model.EditDataRecord;
         var modal = $("#@Model.EditClick");
+
+
         //Read the data from the controls
-        $.each(jsonToSend, function(name, value){
-            jsonToSend[name] = modal.find(name).val();
+        $.each(jsonToSend, function(key, val) {
+            //display the key and value pair
+            if(modal.find("#" + key).length > 0)
+            {
+                jsonToSend[key] = modal.find("#" + key).val();
+            }
         });
+
 
         jsonToSend.RowFunction = functionality;
         var url = '@Model.AjaxPostUrl';
@@ -248,6 +265,7 @@
             success: function()
             {
                 $('#@Model.EditClick').modal("close");
+                table.ajax.reload( null, false );
             },
             error: @Html.Raw(Model.AjaxErrorHandler)
             });
@@ -288,7 +306,16 @@
         var tr = ctrl.closest('tr');
         var row = table.row(tr);
         var data = row.data();
-        return data;
+        var jsonData = {};
+        if(table.context[0] != undefined && table.context[0].oInit != undefined)
+        {
+            $.each( data, function( index, value ){
+                jsonData[table.context[0].oInit.aoColumnDefs[index].sName] = value;
+            });
+        }
+
+
+        return jsonData;
     };
 </script>
 @if (Model.PrintScript)

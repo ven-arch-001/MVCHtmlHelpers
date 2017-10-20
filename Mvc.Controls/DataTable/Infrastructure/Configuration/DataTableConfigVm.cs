@@ -517,7 +517,7 @@ namespace Mvc.Controls.DataTable.Infrastructure
                 string.Format("<span class=\"{0}\"></span>", button.Glyphicon);
             string clickEvent = string.IsNullOrEmpty(button.GetClickEvent()) ?
                 string.Empty :
-                button.GetClickEvent() + "();";
+                button.GetClickEvent();
             string callbackEvent =
                 string.IsNullOrEmpty(button.CallBackEvent) ? string.Empty :
                 string.Format("{0}({1}());", button.CallBackEvent, button.GetEventForDataArg());
@@ -561,23 +561,23 @@ namespace Mvc.Controls.DataTable.Infrastructure
                 case CustomButtonFunction.View:
                     button.Glyphicon = "glyphicon glyphicon-eye-open";
                     button.HeaderText = string.IsNullOrEmpty(button.HeaderText) ? "View" : button.HeaderText;
-                    button.SetClickEvent(this.ViewClick);
+                    button.SetClickEvent(string.Format("{0}()", this.ViewClick));
                     break;
                 case CustomButtonFunction.Add:
                     button.Glyphicon = "glyphicon glyphicon-plus";
                     button.HeaderText = string.IsNullOrEmpty(button.HeaderText) ? "Add" : button.HeaderText;
                     //button.SetClickEvent(this.AddClick);
-                    button.SetClickEvent(string.Format("{0}({1})", this.EditClick, CustomButtonFunction.Add));
+                    button.SetClickEvent(string.Format("{0}({1})", this.EditClick, (int)CustomButtonFunction.Add));
                     break;
                 case CustomButtonFunction.Edit:
                     button.Glyphicon = "glyphicon glyphicon-edit";
                     button.HeaderText = string.IsNullOrEmpty(button.HeaderText) ? "Edit" : button.HeaderText;
-                    button.SetClickEvent(string.Format("{0}({1})", this.EditClick, CustomButtonFunction.Edit));
+                    button.SetClickEvent(string.Format("{0}({1})", this.EditClick, (int)CustomButtonFunction.Edit));
                     break;
                 case CustomButtonFunction.Delete:
                     button.Glyphicon = "glyphicon glyphicon-remove";
-                    button.HeaderText = string.IsNullOrEmpty(button.HeaderText) ? "Delete" : button.HeaderText;
-                    button.SetClickEvent(this.DeleteClick);
+                    button.HeaderText = string.IsNullOrEmpty(button.HeaderText) ? "Delete" : button.HeaderText;                    
+                    button.SetClickEvent(string.Format("{0}()", this.DeleteClick));
                     break;
                 case CustomButtonFunction.Custom:                    
                     break;
@@ -615,7 +615,8 @@ namespace Mvc.Controls.DataTable.Infrastructure
                 Visible = true,
                 Sortable = false,
                 DisplayName = button.HeaderText,
-                Editable = false
+                Editable = false,
+                Name = string.Empty
             });
             this.Columns = cols;
 

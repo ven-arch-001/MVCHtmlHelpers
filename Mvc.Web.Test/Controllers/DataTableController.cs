@@ -30,7 +30,10 @@ namespace Mvc.Web.Test.Controllers
                 {
                     UserId = user.UserId,
                     LastName = user.LastName,
-                    FirstName = user.FirstName ?? string.Empty,
+                    FirstName = user.FirstName,  
+                    IsActive = user.IsActive,
+                    GenderId = user.GenderId,
+                    StateId = user.StateId,
                     Address = user.Address,
                     SSN = user.SSN,
                     BirthDate = user.BirthDate,
@@ -43,12 +46,12 @@ namespace Mvc.Web.Test.Controllers
             return DataTablesResult.Create(data, dataTableParam,
                 rowViewModel => new
                 {
-                    LastName = string.Format("<b>{0}</b>", rowViewModel.LastName),
-                    FirstName = string.Format("<b><u>{0}</u></b>", rowViewModel.FirstName),
+                    LastNameTem = string.Format("<b>{0}</b>", rowViewModel.LastName),
+                    FirstNameTem = string.Format("<b><u>{0}</u></b>", rowViewModel.FirstName),
                     Content = "<div>" +
                               "  <img src='" + "https://randomuser.me/api/portraits/thumb/men/" + (rowViewModel.PictureUri % 100) + ".jpg" + "' />" +
                               "</div>",
-                    BirthDate = rowViewModel.BirthDate.HasValue ? rowViewModel.BirthDate.Value.ToString("MM/dd/yyyy") : string.Empty,
+                    BirthDateTem = rowViewModel.BirthDate.HasValue ? rowViewModel.BirthDate.Value.ToString("MM/dd/yyyy") : string.Empty,
 
                 });
         }
@@ -70,9 +73,11 @@ namespace Mvc.Web.Test.Controllers
                            UserId = a.UserId,
                            SSN = a.SSN,
                            LastName = a.LastName,
-                           FirstName = a.FirstName ?? string.Empty,
+                           FirstName = a.FirstName,
+                           IsActive = a.IsActive,
                            Address = a.Address,
-
+                           GenderId = a.GenderId,
+                           StateId = a.StateId,
                            BirthDate = a.BirthDate,
                            Gender = c.Text,
                            State = b.Text,
@@ -82,12 +87,12 @@ namespace Mvc.Web.Test.Controllers
             return DataTablesResult.Create(data, dataTableParam,
                 rowViewModel => new
                 {
-                    LastName = string.Format("<b>{0}</b>", rowViewModel.LastName),
-                    FirstName = string.Format("<b><u>{0}</u></b>", rowViewModel.FirstName),
+                    LastNameTem = string.Format("<b>{0}</b>", rowViewModel.LastName),
+                    FirstNameTem = string.Format("<b><u>{0}</u></b>", rowViewModel.FirstName),
                     Content = "<div>" +
                               "  <img src='" + "https://randomuser.me/api/portraits/thumb/men/" + (rowViewModel.PictureUri % 100) + ".jpg" + "' />" +
                               "</div>",
-                    BirthDate = rowViewModel.BirthDate.HasValue ? rowViewModel.BirthDate.Value.ToString("dd-MMM-yyyy") : string.Empty,
+                    BirthDateTem = rowViewModel.BirthDate.HasValue ? rowViewModel.BirthDate.Value.ToString("dd-MMM-yyyy") : string.Empty,
 
                 });
         }
@@ -113,7 +118,10 @@ namespace Mvc.Web.Test.Controllers
                            UserId = a.UserId,
                            SSN = a.SSN,
                            LastName = a.LastName,
-                           FirstName = a.FirstName ?? string.Empty,
+                           FirstName = a.FirstName,
+                           IsActive = a.IsActive,
+                           GenderId = a.GenderId,
+                           StateId = a.StateId,
                            Address = a.Address,
 
                            BirthDate = a.BirthDate,
@@ -125,12 +133,12 @@ namespace Mvc.Web.Test.Controllers
             return DataTablesResult.Create(data, dataTableParam,
                 rowViewModel => new
                 {
-                    LastName = string.Format("<b>{0}</b>", rowViewModel.LastName),
-                    FirstName = string.Format("<b><u>{0}</u></b>", rowViewModel.FirstName),
+                    LastNameTem = string.Format("<b>{0}</b>", rowViewModel.LastName),
+                    FirstNameTem = string.Format("<b><u>{0}</u></b>", rowViewModel.FirstName),
                     Content = "<div>" +
                               "  <img src='" + "https://randomuser.me/api/portraits/thumb/men/" + (rowViewModel.PictureUri % 100) + ".jpg" + "' />" +
                               "</div>",
-                    BirthDate = rowViewModel.BirthDate.HasValue ? rowViewModel.BirthDate.Value.ToString("dd-MMM-yy") : string.Empty,
+                    BirthDateTem = rowViewModel.BirthDate.HasValue ? rowViewModel.BirthDate.Value.ToString("dd-MMM-yy") : string.Empty,
 
                 });
         }
@@ -150,13 +158,16 @@ namespace Mvc.Web.Test.Controllers
             {                
                 case CustomButtonFunction.Add:
                     db.Users.Add(dataEF);
+                    db.Entry(dataEF).State = System.Data.Entity.EntityState.Added;
                     break;
                 case CustomButtonFunction.Edit:
-                    db.Users.Attach(dataEF);
+                    db.Users.Add(dataEF);
+                    db.Entry(dataEF).State = System.Data.Entity.EntityState.Modified;
                     break;
                 case CustomButtonFunction.Delete:
                     dataEF.IsActive = false;
-                    db.Users.Attach(dataEF);
+                    db.Users.Add(dataEF);
+                    db.Entry(dataEF).State = System.Data.Entity.EntityState.Modified;
                     break;
                 case CustomButtonFunction.Custom:
                     throw new NotImplementedException("Custom not implmented");
@@ -165,7 +176,7 @@ namespace Mvc.Web.Test.Controllers
                     throw new Exception("Row Function not set");
                   
             }
-
+            db.SaveChanges();
             return Json(data, JsonRequestBehavior.AllowGet);
         }
     }

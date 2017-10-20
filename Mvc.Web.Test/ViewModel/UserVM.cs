@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace Mvc.Web.Test.ViewModel
 {    
@@ -13,23 +14,39 @@ namespace Mvc.Web.Test.ViewModel
         [DataTables(Visible = false)]
         public int UserId { get; set; }
 
+        [AllowHtml]
         [DataTables(Width = 25, WidthUnit = WidthUnit.Percent, DisplayName = "Last Name", 
             Sortable = false, SortDirection = SortDirection.None, 
-            Searchable = true, Visible = true)]
+            Searchable = true, Visible = true, Editable = false)]
         //[DataTablesFilter(Selector = "#" + nameof(LastName) + "Filter")]
+        public string LastNameTem { get; set; }
+
+        [AllowHtml]
+        [DataTables(Width = 500, WidthUnit = WidthUnit.Pixel, Visible = true, Editable = false)]
+        //[DataTablesFilter(Selector = "#" + nameof(FirstName) + "Filter")]
+        public string FirstNameTem { get; set; }
+
+
+        [DataTables(Sortable = false, Searchable = false, Visible = false, Editable = true)]
+        //[DataTablesFilter(DataTablesFilterType.None)]
         public string LastName { get; set; }
 
 
-        [DataTables(Width = 500, WidthUnit = WidthUnit.Pixel, Visible = true)]
-        //[DataTablesFilter(Selector = "#" + nameof(FirstName) + "Filter")]
+
+        [DataTables(Sortable = false, Searchable = false, Visible = false, Editable = true)]
+        //[DataTablesFilter(DataTablesFilterType.None)]
         public string FirstName { get; set; }
 
-        //[DataTablesFilter(DataTablesFilterType.DateTimeRange, Selector = "#" + nameof(BirthDate) + "Filter")]
-        //[DefaultToStartOf2014]
-        [DataTables(Visible = true)]
+      
+        [DataTables(Visible = false, Editable = true)]
         public DateTime? BirthDate { get; set; }
 
-        [DataTables(Sortable = false, Searchable = true)]
+
+        [AllowHtml]
+        [DataTables(Visible = true, Editable = false, DisplayName = "Birth Date")]
+        public string BirthDateTem { get; set; }
+
+        [DataTables(Sortable = false, Searchable = true, Editable = true)]
         //[DataTablesFilter(DataTablesFilterType.None)]
         public string SSN { get; set; }
 
@@ -52,11 +69,28 @@ namespace Mvc.Web.Test.ViewModel
         //[DataTablesFilter(DataTablesFilterType.None)]
         public int PictureUri { get; set; }
 
+        [AllowHtml]
         [DataTables(Sortable = false, Searchable = false)]
         //[DataTablesFilter(DataTablesFilterType.None)]
         public string Content { get; set; }
 
+
+        [DataTables(Sortable = false, Searchable = false, Visible = true, Editable = true)]
+        //[DataTablesFilter(DataTablesFilterType.None)]
+        public bool IsActive { get; set; }
+       
+
         public CustomButtonFunction RowFunction
         { get; set; }
+
+
+
+        [DataTables(Visible = false)]        
+        public int GenderId { get; set; }
+
+
+        [DataTables(Visible = false)]
+        public int StateId { get; set; }
+
     }
 }
