@@ -13,7 +13,7 @@
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/datatable")
 
-    @Scripts.Render("~/Scripts/pnotify.custom.min.js")
+    @Scripts.Render("~/Scripts/pnotify.all.js")
 
     @RenderSection("scripts", required: false)
     <script>
@@ -27,13 +27,14 @@
             });
         };
 
-        window.confirm = function (message, title, type) {
+        window.confirm = function (message, title) {
+            var dfd = jQuery.Deferred();
             (new PNotify({
                 title: title,
                 text: message,
-                icon: 'glyphicon glyphicon-question-sign',
+                icon: 'glyphicon glyphicon-remove',
                 hide: false,
-                addclass: 'pnotifyConfirm',
+                addclass: 'pnotifyConfirm center',
                 confirm: {
                     confirm: true
                 },
@@ -45,10 +46,13 @@
                     history: false
                 }
             })).get().on('pnotify.confirm', function () {
-                return true;
+                dfd.resolve(true);
             }).on('pnotify.cancel', function () {
-                return false;
+                dfd.resolve(false);
             });
+
+            // Return the Promise so caller can't change the Deferred
+            return dfd.promise();
         }
 
         var originalVal = $.fn.val;
@@ -101,6 +105,10 @@
                     <li><a href="@Url.Action("Date", "Home")">Date</a></li>
                     <li><a href="@Url.Action("TextBox", "Home")">TextBox</a></li>
                     <li><a href="@Url.Action("Index", "DataTable")">DataTable</a></li>
+                    <li>&nbsp;| DataTable - Edit template</li>
+                    <li> &nbsp;| CheckBox</li>
+                    <li> &nbsp;| CheckBox List</li>
+                    <li> &nbsp;| Spell Checker</li>
                 </ul>
             </div><!-- /.navbar-collapse -->
         </div>

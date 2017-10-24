@@ -210,7 +210,7 @@
         //var data = row.data();
         var columns = table.columns();
 
-        var modal = $("#@Model.EditClick");      
+        var modal = $("#@Model.EditClick");
 
         modal.on('click', '#saveRecord', function(){
              @(Model.SaveClick + "(functionality)");
@@ -264,7 +264,7 @@
             dataType: 'json',
             success: function()
             {
-                $('#@Model.EditClick').modal("close");
+                $('#@Model.EditClick').modal("hide");
                 table.ajax.reload( null, false );
             },
             error: @Html.Raw(Model.AjaxErrorHandler)
@@ -275,26 +275,37 @@
     }
 
     var @Model.DeleteClick = function () {
+
         var table = $('#@Model.Id').DataTable();
         var ctrl = $(event.target);
         var tr = ctrl.closest('tr');
         var row = table.row(tr);
-        //var data = row.data();
         var jsonToSend = @Model.DataArgFetchCall;
-        jsonToSend.RowFunction = @CustomButtonFunction.Delete;
-        var url = '@Model.AjaxPostUrl';
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: jsonToSend,
-            cache : false,
-            dataType: 'json',
-            success: function()
-            {
-                $('#@Model.EditClick').modal("close");
-            },
-            error: @Html.Raw(Model.AjaxErrorHandler)
-            });
+
+
+        confirm('Please confirm to delete the record', 'Deletion').
+        then(function(e)
+        {
+            if(e == true)
+            { 
+                jsonToSend.RowFunction = @((int)CustomButtonFunction.Delete);
+                var url = '@Model.AjaxPostUrl';
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: jsonToSend,
+                    cache : false,
+                    dataType: 'json',
+                    success: function()
+                    {
+                        $('#@Model.EditClick').modal("hide");
+                        table.ajax.reload( null, false );
+                    },
+                    error: @Html.Raw(Model.AjaxErrorHandler)
+                });
+            }
+
+        });
 
 
     };

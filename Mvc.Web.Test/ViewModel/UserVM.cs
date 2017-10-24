@@ -65,6 +65,16 @@ namespace Mvc.Web.Test.ViewModel
         public string State { get; set; }
 
 
+        [DataTables(Sortable = false, Searchable = false, Visible = false, Editable = true)]
+        //[DataTablesFilter(DataTablesFilterType.None)]
+        public bool IsActive { get; set; }
+
+        [AllowHtml]
+        [DataTables(Sortable = false, Searchable = false, Visible = true, Editable = false)]
+        //[DataTablesFilter(DataTablesFilterType.None)]
+        public string Status { get; set; }
+
+
         [DataTables(Sortable = false, Searchable = false, Visible = false)]
         //[DataTablesFilter(DataTablesFilterType.None)]
         public int PictureUri { get; set; }
@@ -75,10 +85,8 @@ namespace Mvc.Web.Test.ViewModel
         public string Content { get; set; }
 
 
-        [DataTables(Sortable = false, Searchable = false, Visible = true, Editable = true)]
-        //[DataTablesFilter(DataTablesFilterType.None)]
-        public bool IsActive { get; set; }
-       
+      
+
 
         public CustomButtonFunction RowFunction
         { get; set; }

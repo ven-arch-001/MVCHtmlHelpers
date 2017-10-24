@@ -52,6 +52,7 @@ namespace Mvc.Web.Test.Controllers
                               "  <img src='" + "https://randomuser.me/api/portraits/thumb/men/" + (rowViewModel.PictureUri % 100) + ".jpg" + "' />" +
                               "</div>",
                     BirthDateTem = rowViewModel.BirthDate.HasValue ? rowViewModel.BirthDate.Value.ToString("MM/dd/yyyy") : string.Empty,
+                    Status = rowViewModel.IsActive ? "<span class='label label-success'>Active</span>" : "<span class='label label-danger'>Deleted</span>"
 
                 });
         }
@@ -93,7 +94,7 @@ namespace Mvc.Web.Test.Controllers
                               "  <img src='" + "https://randomuser.me/api/portraits/thumb/men/" + (rowViewModel.PictureUri % 100) + ".jpg" + "' />" +
                               "</div>",
                     BirthDateTem = rowViewModel.BirthDate.HasValue ? rowViewModel.BirthDate.Value.ToString("dd-MMM-yyyy") : string.Empty,
-
+                    Status = rowViewModel.IsActive ? "<span class='label label-success'>Active</span>" : "<span class='label label-danger'>Deleted</span>"
                 });
         }
 
@@ -139,7 +140,7 @@ namespace Mvc.Web.Test.Controllers
                               "  <img src='" + "https://randomuser.me/api/portraits/thumb/men/" + (rowViewModel.PictureUri % 100) + ".jpg" + "' />" +
                               "</div>",
                     BirthDateTem = rowViewModel.BirthDate.HasValue ? rowViewModel.BirthDate.Value.ToString("dd-MMM-yy") : string.Empty,
-
+                    Status = rowViewModel.IsActive ? "<span class='label label-success'>Active</span>" : "<span class='label label-danger'>Deleted</span>"
                 });
         }
 

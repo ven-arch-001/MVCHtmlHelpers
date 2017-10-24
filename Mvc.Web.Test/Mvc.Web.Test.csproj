@@ -213,20 +213,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TestDB.dbml</DependentUpon>
     </Compile>
-    <Compile Include="Models\TextModel.cs" />
-    <Compile Include="Models\DateModel.cs" />
-    <Compile Include="Models\AsyncDropdownModel.cs" />
-    <Compile Include="Models\MultipleDependenciesModel.cs" />
-    <Compile Include="Models\CascadingDropdownsModel.cs" />
+    <Compile Include="ViewModel\TextModel.cs" />
+    <Compile Include="ViewModel\DateModel.cs" />
+    <Compile Include="ViewModel\AsyncDropdownModel.cs" />
+    <Compile Include="ViewModel\MultipleDependenciesModel.cs" />
+    <Compile Include="ViewModel\CascadingDropdownsModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\CheckBoxVM.cs" />
     <Compile Include="ViewModel\UserVM.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\MVC.mdf" />
-    <Content Include="App_Data\MVC_log.ldf">
-      <DependentUpon>MVC.mdf</DependentUpon>
-    </Content>
     <Content Include="App_Data\Script.txt" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
@@ -544,7 +540,8 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Scripts\pnotify.custom.min.js" />
+    <Content Include="Scripts\pnotify.all.min.js" />
+    <Content Include="Scripts\pnotify.all.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
