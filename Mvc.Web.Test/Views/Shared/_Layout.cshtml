@@ -61,11 +61,19 @@
                 // setter invoked, do processing
 
                 //Check if the control type is jq Datepicker
+                if (this.data("datepicker") != null && !isNaN(Date.parse(value))) {
 
+                    this.datepicker("setDate", new Date(Date.parse(value)));
+                }
 
 
                 //Check if the control type is jq Dropdown, call refresh() after data bind
+                else if (this.data("selectmenu") != null) {
 
+                    this.val(preselectedValue);
+                    this.selectmenu('refresh');
+                    this.trigger('selectmenuchange');
+                }
 
                 //Check if the control type is checkbox
 
@@ -73,7 +81,9 @@
                 //check if the control is jq check box list
 
                 //Check if the control type is label
-
+                else if (this.is("label")) {
+                    $(this).text(val);
+                }
 
                 return originalVal.call(this, value);
             }
