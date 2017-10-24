@@ -22,5 +22,11 @@ namespace Mvc.Web.Test.Models
         [Display(Name = "Country Name JQ", Description = "Country Desc")]
         public string SelectedCountryJQ { get; set; }
 
+
+
+        [Required]
+        [Display(Name = "States JQ", Description = "State Desc")]
+        public string States { get; set; }
+
     }
 }

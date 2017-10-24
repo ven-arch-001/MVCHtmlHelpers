@@ -40,8 +40,8 @@ namespace Mvc.Controls
                 targetElement.dispatchEvent(event);   
                 if(edit == 'True'){{
                     $('#{0}').selectmenu({{width: '{3}%'}});
-                    if(setHeight == 'True')
-                        $('#{0}').selectmenu().selectmenu('menuWidget').css('height', '{7}px');
+                    //if(setHeight == 'True')
+                    //    $('#{0}').selectmenu().selectmenu('menuWidget').css('height', '{7}px');
                         //$('#{0}').selectmenu().selectmenu('menuWidget').addClass('overflow{0}');
                 }}
             }}";
@@ -122,6 +122,15 @@ namespace Mvc.Controls
             function success{3}(data, status, xhr) {{  
                 {1}
                 if (data) {{
+                    
+                   //set the height of the dropdown
+                    var space = window.innerHeight - $('#{3}').closest('.form-group').offset().top - 50;
+                    if(data.length * 30 > space)
+                    {{                        
+                        $('#{3}').selectmenu().selectmenu('menuWidget').css('height', space);
+
+                    }}
+
                     data.forEach(function(item, i) {{ 
                         if(edit == 'True')
                         {{

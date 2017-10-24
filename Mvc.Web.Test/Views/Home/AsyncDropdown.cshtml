@@ -103,6 +103,20 @@
     OnChange = "StreetChange"
 
     })
+
+
+    @Html.DropDownListJQCustom(input: new DropdownInput<AsyncDropdownModel>()
+{
+    ModelProperty = m => m.States,
+    DataUri = Url.Action("State", "MasterData"),  
+    HeightPixel = 80,   
+    PlaceHolder = "Please select a State",   
+    ShowLabel = true
+}, options: new SourceCallBackOptions()
+{
+    HttpMethod = HttpVerb.POST,  
+
+})
 </div>
 <input type="submit" value="Submit" class="btn btn-primary" />
 
