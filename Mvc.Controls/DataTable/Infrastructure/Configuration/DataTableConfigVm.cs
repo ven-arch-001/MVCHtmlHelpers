@@ -70,9 +70,9 @@ namespace Mvc.Controls.DataTable.Infrastructure
         public static string DefaultTableClass { get; set; }
         public string TableClass { get; set; }
 
-        public DataTableConfigVm(string id, IEnumerable<ColDef> columns)             
+        public DataTableConfigVm(string id, IEnumerable<ColDef> columns)
         {
-            
+
             this.Id = id;
             this.Columns = columns;
             this.Filter = true;
@@ -96,6 +96,8 @@ namespace Mvc.Controls.DataTable.Infrastructure
 
         public string Id { get; set; }
 
+
+
         public string ViewClick { get { return "view" + this.Id.Replace("-", string.Empty); } }
 
         public string SaveClick { get { return "save" + this.Id.Replace("-", string.Empty); } }
@@ -105,6 +107,31 @@ namespace Mvc.Controls.DataTable.Infrastructure
         public string EditDataRecord { get { return "data" + this.Id.Replace("-", string.Empty); } }
 
         //public string AddClick { get { return "add" + this.Id.Replace("-", string.Empty); } }
+
+        public string AddClickEvent
+        {
+            get
+            {
+
+                var button = this.CustomButtons.Where(t => t.Functionality == CustomButtonFunction.Add).FirstOrDefault();
+                if (button != null)
+                {
+                    string text = !string.IsNullOrEmpty(button.LabelText) ? button.LabelText :
+              string.Format("<span class=\"{0}\"></span>", button.Glyphicon);
+                    string clickEvent = string.IsNullOrEmpty(button.GetClickEvent()) ?
+                        string.Empty :
+                        button.GetClickEvent();
+                    string callbackEvent =
+                        string.IsNullOrEmpty(button.CallBackEvent) ? string.Empty :
+                        string.Format("{0}({1}());", button.CallBackEvent, button.GetEventForDataArg());
+                    return string.Format("<button class='btn btn-primary' onclick=\"{0};{1};\">{2}</button>", clickEvent, callbackEvent, text);
+                }
+                else
+                {
+                    return string.Empty;
+                }
+            }
+        }
 
         public string DeleteClick { get { return "del" + this.Id.Replace("-", string.Empty); } }
 
@@ -122,7 +149,8 @@ namespace Mvc.Controls.DataTable.Infrastructure
 
         public IEnumerable<ColDef> Columns { get; set; }
 
-        public IEnumerable<ColDef> ColumnsEdit {
+        public IEnumerable<ColDef> ColumnsEdit
+        {
             get
             {
                 return this.Columns.Where(t => t.Editable).AsEnumerable();
@@ -165,7 +193,7 @@ namespace Mvc.Controls.DataTable.Infrastructure
             get
             {
                 var initialSearches = Columns
-                    .Select(c => c.Searchable & c.SearchCols != null ? 
+                    .Select(c => c.Searchable & c.SearchCols != null ?
                     c.SearchCols : null as object).ToArray();
                 return new JArray(initialSearches);
             }
@@ -553,7 +581,7 @@ namespace Mvc.Controls.DataTable.Infrastructure
 
         public void AddButtoncolumn(CustomButton button)
         {
-            
+
             switch (button.Functionality)
             {
                 case CustomButtonFunction.None:
@@ -576,10 +604,10 @@ namespace Mvc.Controls.DataTable.Infrastructure
                     break;
                 case CustomButtonFunction.Delete:
                     button.Glyphicon = "glyphicon glyphicon-remove";
-                    button.HeaderText = string.IsNullOrEmpty(button.HeaderText) ? "Delete" : button.HeaderText;                    
+                    button.HeaderText = string.IsNullOrEmpty(button.HeaderText) ? "Delete" : button.HeaderText;
                     button.SetClickEvent(string.Format("{0}()", this.DeleteClick));
                     break;
-                case CustomButtonFunction.Custom:                    
+                case CustomButtonFunction.Custom:
                     break;
             }
 
@@ -608,21 +636,30 @@ namespace Mvc.Controls.DataTable.Infrastructure
             {
                 button.LabelText = string.IsNullOrEmpty(button.LabelText) ? button.Functionality.ToString() : button.LabelText;
             }
-            this.CustomButtons.Add(button);
-            var cols = this.Columns.ToList();
-            cols.Add(new Models.ColDef(button.LabelText, typeof(string))
+           
+
+            //Update the Column and Button list
+            switch (button.Functionality)
             {
-                Visible = true,
-                Sortable = false,
-                DisplayName = button.HeaderText,
-                Editable = false,
-                Name = string.Empty
-            });
-            this.Columns = cols;
-
+                case CustomButtonFunction.Edit:
+                case CustomButtonFunction.Delete:
+                case CustomButtonFunction.Custom:
+                    var cols = this.Columns.ToList();
+                    cols.Add(new Models.ColDef(button.LabelText, typeof(string))
+                    {
+                        Visible = true,
+                        Sortable = false,
+                        DisplayName = button.HeaderText,
+                        Editable = false,
+                        Name = string.Empty
+                    });
+                    this.Columns = cols;
+                    this.CustomButtons.Add(button);
+                    break;
+                case CustomButtonFunction.Add:
+                    this.CustomButtons.Add(button);
+                    break;
+            }
         }
-
-
-
     }
 }

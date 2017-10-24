@@ -3,6 +3,11 @@
 @using Newtonsoft.Json
 @using Newtonsoft.Json.Linq
 @model Mvc.Controls.DataTable.Infrastructure.DataTableConfigVm
+
+@if (!string.IsNullOrEmpty(Model.AddClickEvent))
+{
+    @Html.Raw(Model.AddClickEvent)
+}
 <table id="@Model.Id" class="display @(Model.TableClass ?? DataTableConfigVm.DefaultTableClass ?? "")" @Html.Raw(Model.FixedLayout ? "style='table-layout:fixed'" : "")>
     <thead>
         @if (Model.UseColumnFilterPlugin)
@@ -68,18 +73,20 @@
                                 {
                                     case EditControl.TextBox:
                                         @Html.TextBoxCustom(new TextInput<string>()
-                               {
-                                   IdAttr = column.Name,
-                                   ShowLabel = true
-                               }, null);
+                                   {
+                                       IdAttr = column.Name,
+                                       LabelText = column.DisplayName,
+                                       ShowLabel = true
+                                   }, null);
                                         break;
                                     case EditControl.DropDown:
                                         @Html.DropDownListJQCustom(new DropdownInput<string>()
-                               {
-                                   IdAttr = column.Name,
-                                   DataUri = column.EditControlDataUri,
-                                   ShowLabel = true
-                               }, null);
+                                   {
+                                       IdAttr = column.Name,
+                                       DataUri = column.EditControlDataUri,
+                                       LabelText = column.DisplayName,
+                                       ShowLabel = true,
+                                   }, null);
                                         break;
 
                                 }
@@ -205,16 +212,21 @@
     var @Model.EditClick = function (functionality) {
         var table = $('#@Model.Id').DataTable();
         var ctrl = $(event.target);
-        var tr = ctrl.closest('tr');
-        var row = table.row(tr);
+        //var tr = ctrl.closest('tr');
+        //var row = table.row(tr);
         //var data = row.data();
         var columns = table.columns();
 
         var modal = $("#@Model.EditClick");
 
-        modal.on('click', '#saveRecord', function(){
+
+        modal.find('#saveRecord').unbind("click");
+        modal.find('#saveRecord').bind( "click", function() {
              @(Model.SaveClick + "(functionality)");
         });
+        @*modal.on('click', '#saveRecord', function(){
+            @(Model.SaveClick + "(functionality)");
+        });*@
 
         //Loop through the controls on the edit form and assign the values
         var data = @Model.DataArgFetchCall;
@@ -287,7 +299,7 @@
         then(function(e)
         {
             if(e == true)
-            { 
+            {
                 jsonToSend.RowFunction = @((int)CustomButtonFunction.Delete);
                 var url = '@Model.AjaxPostUrl';
                 $.ajax({
@@ -302,7 +314,7 @@
                         table.ajax.reload( null, false );
                     },
                     error: @Html.Raw(Model.AjaxErrorHandler)
-                });
+                    });
             }
 
         });
@@ -315,9 +327,26 @@
         var table = $('#@Model.Id').DataTable();
         var ctrl = $(event.target);
         var tr = ctrl.closest('tr');
+        var jsonData = {};
+
+        if(tr.length == 0)
+        {
+            if(table.context[0] != undefined && table.context[0].oInit != undefined)
+            {
+                $.each( table.context[0].oInit.aoColumnDefs, function( index, value ){
+                    if(table.context[0].oInit.aoColumnDefs[index].sName != undefined)
+                    {
+                        jsonData[table.context[0].oInit.aoColumnDefs[index].sName] = null;
+                    }
+                });
+            }
+
+            return jsonData;
+        }
+
         var row = table.row(tr);
         var data = row.data();
-        var jsonData = {};
+
         if(table.context[0] != undefined && table.context[0].oInit != undefined)
         {
             $.each( data, function( index, value ){

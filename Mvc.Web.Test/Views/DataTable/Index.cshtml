@@ -26,6 +26,7 @@
                 vmInclude.PrintScript = false;
                 vmInclude.AddButtoncolumn(new CustomButton() { Functionality = CustomButtonFunction.View, CallBackEvent = "includeView" });
                 vmInclude.AddButtoncolumn(new CustomButton() { Functionality = CustomButtonFunction.Edit });
+                vmInclude.AddButtoncolumn(new CustomButton() { Functionality = CustomButtonFunction.Add, LabelText = "Add" });
                 vmInclude.AddButtoncolumn(new CustomButton() { Functionality = CustomButtonFunction.Delete });
             }
             @Html.Partial("DataTable", vmInclude)
