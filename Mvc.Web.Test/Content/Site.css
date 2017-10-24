@@ -81,3 +81,5 @@ textarea {
 {
     opacity:0.05 !important;
 }
+
+.ui-selectmenu-menu {z-index: 1055;}  /* z-index: 1005 to make selectmenu work with dialog */

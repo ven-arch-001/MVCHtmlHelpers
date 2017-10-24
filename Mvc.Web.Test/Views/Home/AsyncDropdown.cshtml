@@ -68,7 +68,7 @@
     PlaceHolder = "Please select a Street",
     LabelText = "Streets of Houston",
     ShowLabel = true,
-    Access =  ControlAccess.Hide
+    Access =  ControlAccess.Edit
     }, options: new SourceCallBackOptions()
     {
     HttpMethod = HttpVerb.POST,
@@ -88,6 +88,7 @@
     ModelProperty = m => m.SelectedCountryJQ,
     DataUri = Url.Action("GetStreets", "Home"),
     DataUriParamName = "city",
+    HeightPixel = 80,
     DataUriParamValue = "Houston",
     PlaceHolder = "Please select a Street",
     LabelText = "Streets of Houston",

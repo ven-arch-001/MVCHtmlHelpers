@@ -14,7 +14,7 @@ namespace Mvc.Controls
 {
     public static class DropDownListExtensionsJQ
     {
-        private const string CssInit = @".overflow{0}{{ height: {1}px; }}";
+        //private const string CssInit = @".overflow{0}{{ height: {1}px; }}";
 
         /// <summary>
         /// 0 - dropdown element Id
@@ -41,7 +41,8 @@ namespace Mvc.Controls
                 if(edit == 'True'){{
                     $('#{0}').selectmenu({{width: '{3}%'}});
                     if(setHeight == 'True')
-                        $('#{0}').selectmenu().selectmenu('menuWidget').addClass('overflow{0}');
+                        $('#{0}').selectmenu().selectmenu('menuWidget').css('height', '{7}px');
+                        //$('#{0}').selectmenu().selectmenu('menuWidget').addClass('overflow{0}');
                 }}
             }}";
 
@@ -407,7 +408,7 @@ namespace Mvc.Controls
             var optionLblStr = optionLabel == null ? "''" : string.Format(@"'<option value="""">{0}</option>'", optionLabel);
             scriptBuilder.AppendFormat(Js1CreateInitFunction, inputId, selectedValue,
                 optionLblStr, widthPercent,
-                ajaxUri, access == ControlAccess.Edit, heightPixel > 0);
+                ajaxUri, access == ControlAccess.Edit, heightPixel > 0, heightPixel);
             //scriptBuilder.AppendFormat(Js1CreateInitFunction, inputId, triggeredByProperty, selectedValue, removeDisabledString, optionLblStr, setDisableString);
             //ApplyCallBeforeDataLoadFunctionString(ref scriptBuilder, ajaxActionParamName, options);
             ApplyJsonToSendString(ref scriptBuilder, ajaxActionParamName, ajaxActionParamValue, options);
@@ -418,7 +419,7 @@ namespace Mvc.Controls
             scriptBuilder.AppendFormat(Js7EndFormat, inputId);
 
             var cssBuilder = new StringBuilder();
-            cssBuilder.AppendFormat(CssInit, inputId, heightPixel);
+            //cssBuilder.AppendFormat(CssInit, inputId, heightPixel);
             var script = string.Concat("<script>", scriptBuilder.ToString(), "</script>");
             var css = string.Concat("<style>", cssBuilder.ToString(), "</style>");
             return new MvcHtmlString(

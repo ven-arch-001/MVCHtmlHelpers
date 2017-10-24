@@ -93,11 +93,11 @@ namespace Mvc.Web.Test.ViewModel
 
 
 
-        [DataTables(Visible = false)]        
+        [DataTables(Visible = false, Editable = true, DisplayName = "Gender", EditControlDataUri = "MasterData/Gender", EditControl = EditControl.DropDown)]
         public int GenderId { get; set; }
 
 
-        [DataTables(Visible = false)]
+        [DataTables(Visible = false, Editable = true, DisplayName = "State", EditControlDataUri = "MasterData/State", EditControl = EditControl.DropDown)]
         public int StateId { get; set; }
 
     }
