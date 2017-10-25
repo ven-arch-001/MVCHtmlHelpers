@@ -16,6 +16,11 @@ namespace Mvc.Controls
 
     public abstract class ControlInputBase<TModel>
     {
+        /// <summary>
+        ///     This will be appended to the Id attribute to make it unique
+        /// </summary>
+        public string Group { get; set; } = string.Empty;
+
         public string IdAttr { get; set; } = string.Empty;
         public TModel Value { get; set; }
         public string NameAttr { get; set; } = string.Empty;

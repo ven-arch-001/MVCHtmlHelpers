@@ -300,8 +300,8 @@ namespace Mvc.Controls
 
             return new MvcHtmlString(
                 string.Concat(
-                    string.Format(BuildHtmlPlaceHolder(), defaultLabelHtml.ToString(), defaultControlHtml.ToString(),
-                    hiddenControlHtml.ToString()),
+                    string.Format(BuildHtmlPlaceHolder(), defaultLabelHtml.ToString(), hiddenControlHtml.ToString(),
+                    defaultControlHtml.ToString()),
                     Environment.NewLine, script));
         }
 
