@@ -61,18 +61,18 @@
                 // setter invoked, do processing
 
                 //Check if the control type is jq Datepicker
-                if (this.data("datepicker") != null && !isNaN(Date.parse(value))) {
+                if (this.data().hasOwnProperty('datepicker') && !isNaN(Date.parse(value))) {
 
                     //$("#" + this.data("datepicker").id).datepicker().datepicker("setDate", new Date(Date.parse(value)));
                     var date = new Date(Date.parse(value));
                     return originalVal.call(this, date.format());
                 }
                 //Check if the control type is jq Dropdown, call refresh() after data bind
-                else if (this.data("selectmenu") != null) {
+                else if (this.data().hasOwnProperty('uiSelectmenu')) {
 
-                    $("#" + this.data("selectmenu").id).val(preselectedValue);
-                    $("#" + this.data("selectmenu").id).selectmenu('refresh');
-                    $("#" + this.data("selectmenu").id).trigger('selectmenuchange');
+                    originalVal.call(this, value);
+                    $("#" + this.data().uiSelectmenu.ids.element).selectmenu('refresh');
+                    $("#" + this.data().uiSelectmenu.ids.element).trigger('selectmenuchange');
                     return 0;
                 }
                 //Check if the control type is checkbox
