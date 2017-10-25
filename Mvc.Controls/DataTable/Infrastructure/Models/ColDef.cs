@@ -22,55 +22,56 @@ namespace Mvc.Controls.DataTable.Infrastructure.Models
             this.Searchable = true;
             this.Editable = false;
 
-            this.AssignEditControl(type);
-
-
+            //this.AssignEditControl(type);
+            this.EditControl = ControlHelpers.AssignEditControl(type);
 
         }
 
-        private void AssignEditControl(Type type)
-        {
-            if (type == null || type.GetTypeInfo().IsEnum)
-            {
-                return;
-            }
+        //private void AssignEditControl(Type type)
+        //{
+        //    if (type == null || type.GetTypeInfo().IsEnum)
+        //    {
+        //        return;
+        //    }
 
-            switch (Type.GetTypeCode(type))
-            {
+        //    switch (Type.GetTypeCode(type))
+        //    {
 
-                case TypeCode.Decimal:
-                case TypeCode.Double:
-                case TypeCode.Int16:
-                case TypeCode.Int32:
-                case TypeCode.Int64:
-                case TypeCode.Single:
-                case TypeCode.UInt16:
-                case TypeCode.UInt32:
-                case TypeCode.UInt64:
-                    this.EditControl = EditControl.Numeric;
-                    break;
-                case TypeCode.String:
-                case TypeCode.Char:
-                    this.EditControl = EditControl.TextBox;
-                    break;
-                case TypeCode.Boolean:
-                    this.EditControl = EditControl.CheckBox;
-                    break;
-                case TypeCode.DateTime:
-                    this.EditControl = EditControl.Date;
-                    break;
-                case TypeCode.Object:
-                    if (type.GetTypeInfo().IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
-                    {
-                        AssignEditControl(Nullable.GetUnderlyingType(type));
-                    }
-                    break;
-                default:
-                    this.EditControl = EditControl.Default;
-                    break;
-            }
+        //        case TypeCode.Decimal:
+        //        case TypeCode.Double:
+        //        case TypeCode.Single:
+        //            this.EditControl = EditControl.Decimal;
+        //            break;
+        //        case TypeCode.Int16:
+        //        case TypeCode.Int32:
+        //        case TypeCode.Int64:                
+        //        case TypeCode.UInt16:
+        //        case TypeCode.UInt32:
+        //        case TypeCode.UInt64:
+        //            this.EditControl = EditControl.Numeric;
+        //            break;
+        //        case TypeCode.String:
+        //        case TypeCode.Char:
+        //            this.EditControl = EditControl.TextBox;
+        //            break;
+        //        case TypeCode.Boolean:
+        //            this.EditControl = EditControl.CheckBox;
+        //            break;
+        //        case TypeCode.DateTime:
+        //            this.EditControl = EditControl.Date;
+        //            break;
+        //        case TypeCode.Object:
+        //            if (type.GetTypeInfo().IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+        //            {
+        //                AssignEditControl(Nullable.GetUnderlyingType(type));
+        //            }
+        //            break;
+        //        default:
+        //            this.EditControl = EditControl.Default;
+        //            break;
+        //    }
             
-        }
+        //}
 
 
         public bool Editable { get; set; }

@@ -13,6 +13,7 @@ namespace Mvc.Controls.DataTable.Infrastructure
         Default,
         TextBox,
         Numeric,
+        Decimal,
         DropDown,
         Date,
         CheckBox,

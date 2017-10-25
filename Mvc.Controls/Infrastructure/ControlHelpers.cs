@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Mvc.Controls.DataTable.Infrastructure;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -104,6 +105,56 @@ namespace Mvc.Controls
         }
 
 
-        
+
+
+        internal static EditControl AssignEditControl(Type type)
+        {
+            EditControl output = EditControl.Default;
+             
+            if (type == null || type.GetTypeInfo().IsEnum)
+            {
+                return output;
+            }
+
+            switch (Type.GetTypeCode(type))
+            {
+
+                case TypeCode.Decimal:
+                case TypeCode.Double:
+                case TypeCode.Single:
+                    output = EditControl.Decimal;
+                    break;
+                case TypeCode.Int16:
+                case TypeCode.Int32:
+                case TypeCode.Int64:
+                case TypeCode.UInt16:
+                case TypeCode.UInt32:
+                case TypeCode.UInt64:
+                    output = EditControl.Numeric;
+                    break;
+                case TypeCode.String:
+                case TypeCode.Char:
+                    output = EditControl.TextBox;
+                    break;
+                case TypeCode.Boolean:
+                    output = EditControl.CheckBox;
+                    break;
+                case TypeCode.DateTime:
+                    output = EditControl.Date;
+                    break;
+                case TypeCode.Object:
+                    if (type.GetTypeInfo().IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+                    {
+                        AssignEditControl(Nullable.GetUnderlyingType(type));
+                    }
+                    break;
+                default:
+                    output = EditControl.Default;
+                    break;
+            }
+            return output;
+        }
+
+
     }
 }

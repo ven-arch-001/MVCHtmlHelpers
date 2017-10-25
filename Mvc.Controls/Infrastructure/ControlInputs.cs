@@ -32,8 +32,8 @@ namespace Mvc.Controls
         public object LabelHtmlAttributes { get; set; }
         public bool ShowLabel { get; set; }
         public ControlAccess Access { get; set; } = ControlAccess.Edit;
-        public int WidthPerCent { get; set; } = 50;
-        public int HeightPixel { get; set; } = 0;
+        public virtual int WidthPerCent { get; set; } = 50;
+        public virtual int HeightPixel { get; set; } = 0;
         public string Name
         {
             get
@@ -136,7 +136,25 @@ namespace Mvc.Controls
 
         public int Rows { get; set; } = 1;
 
+    }
 
+
+
+    public class NumericTextInput<T> : ControlInputBase<T>
+    {
+       public override string PlaceHolder { get; set; } = "Enter value";
+
+        public NumericType Type { get; set; } = NumericType.Default;
+
+        public override int WidthPerCent { get; set; } = 25;
+    }
+
+
+    public enum NumericType
+    {
+        Default, 
+        Int,
+        Decimal
     }
 }
 
@@ -152,17 +170,4 @@ namespace Mvc.Controls
 
 
 
-
-//public class CascadingInputById : ControlInputDataSourceBase
-//{
-//    public string Id { get; set; } = string.Empty;
-//    public string Name { get; set; } = string.Empty;
-//    public string SelectedValue { get; set; } = string.Empty;
-//    public string TriggeredById { get; set; } = null;       
-//    public bool DisabledWhenParentNotSelected { get; set; } = true;      
-//}
-//public class DropdownInputById : ControlInputDataSourceBase
-//{      
-//    public string SelectedValue { get; set; } = string.Empty; 
-//    public string DataParamValue { get; set; }
-//}
+ 

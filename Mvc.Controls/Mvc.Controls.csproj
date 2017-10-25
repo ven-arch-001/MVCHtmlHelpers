@@ -143,6 +143,7 @@
     <Compile Include="Infrastructure\ControlInputs.cs" />
     <Compile Include="Label\LabelExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TextBox\NumericTextBoxExtensions.cs" />
     <Compile Include="TextBox\TextBoxExtensions.cs" />
   </ItemGroup>
   <ItemGroup>

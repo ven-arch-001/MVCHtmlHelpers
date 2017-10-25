@@ -199,6 +199,7 @@
     <Compile Include="Controllers\ExportController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MasterDataController.cs" />
+    <Compile Include="Controllers\NumericController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Filters\CustomQueryableAttribute.cs" />
     <Compile Include="Global.asax.cs">
@@ -213,6 +214,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TestDB.dbml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\NumericVM.cs" />
     <Compile Include="ViewModel\TextModel.cs" />
     <Compile Include="ViewModel\DateModel.cs" />
     <Compile Include="ViewModel\AsyncDropdownModel.cs" />
@@ -567,6 +569,7 @@
     <Content Include="Views\Home\TextBox.cshtml" />
     <Content Include="Views\DataTable\Index.cshtml" />
     <Content Include="Views\CheckBox\Index.cshtml" />
+    <Content Include="Views\Numeric\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />

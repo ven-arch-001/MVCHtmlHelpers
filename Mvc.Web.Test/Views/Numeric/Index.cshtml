@@ -1,0 +1,53 @@
+﻿@using Mvc.Controls
+@using Mvc.Web.Test.Models
+@using Mvc.Web.Test.ViewModel
+@model NumericVM
+
+
+
+    @using (Html.BeginForm("Submit", "Numeric", FormMethod.Post))
+    {
+
+        <div class="form-horizontal">
+            <h4>
+                Decimal
+            </h4>
+            @Html.NumericTextBoxCustom(input: new NumericTextInput<NumericVM>()
+   {
+       ModelProperty = m => m.Height,
+       ShowLabel = true,
+       Access = ControlAccess.Edit
+   }, options: new TextCallBackOptions()
+   {
+       OnChange = "CheckBoxChange"
+
+   })
+
+
+
+            <h4>
+                Numeric
+            </h4>
+            @Html.NumericTextBoxCustom(input: new NumericTextInput<NumericVM>()
+       {
+           ModelProperty = m => m.Weight,
+           ShowLabel = true,
+           Access = ControlAccess.Edit
+       }, options: new TextCallBackOptions()
+       {
+           OnChange = "CheckBoxChange"
+
+       })
+
+
+        </div>
+        <input type="submit" value="Submit" class="btn btn-primary" />
+
+    }
+
+    <script type="text/javascript">
+        function CheckBoxChange(e) {
+            var msg = "<small>NumericChanged</small>";
+            alert(msg, "Check callback", "info");
+        }
+    </script>
