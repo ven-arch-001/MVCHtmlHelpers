@@ -118,9 +118,9 @@ namespace Mvc.Controls
             }
 
 
-            var control = ControlHelpers.AssignEditControl(typeof(TModel));
+            
             input.Type = input.Type == NumericType.Default ?
-                (control == DataTable.Infrastructure.EditControl.Decimal ? NumericType.Decimal : NumericType.Int) : input.Type;
+                (ControlHelpers.AssignEditControl(metadata.ModelType) == DataTable.Infrastructure.EditControl.Decimal ? NumericType.Decimal : NumericType.Int) : input.Type;
 
 
             return BuildControl(
@@ -217,11 +217,11 @@ namespace Mvc.Controls
             //Add the default class : form-control
             if (htmlAttributes["class"] == null)
             {
-                htmlAttributes.Add("class", "form-control");
+                htmlAttributes.Add("class", "form-control inline ");
             }
             else
             {
-                htmlAttributes["class"] = "form-control " + htmlAttributes["class"];
+                htmlAttributes["class"] = "form-control inline " + htmlAttributes["class"];
             }
 
 
@@ -287,9 +287,9 @@ namespace Mvc.Controls
 
             scriptBuilder.AppendFormat(Js1CreateInitFunction, inputId, onChange);
             if(type == NumericType.Decimal)
-                scriptBuilder.AppendFormat(Js2CheckIntFormat, inputId, errId);
-            else
                 scriptBuilder.AppendFormat(Js2CheckDecimalFormat, inputId, errId);
+            else
+                scriptBuilder.AppendFormat(Js2CheckIntFormat, inputId, errId);
 
             scriptBuilder.AppendFormat(Js7EndFormat, inputId);
             var script = string.Concat("<script>", scriptBuilder.ToString(), "</script>");
@@ -297,7 +297,7 @@ namespace Mvc.Controls
             return new MvcHtmlString(
                 string.Concat(
                     string.Format(BuildHtmlPlaceHolder(), defaultLabelHtml.ToString(), hiddenControlHtml.ToString(),
-                    defaultControlHtml.ToString(), string.Format("<span id='{0}'></span>", errId)),
+                    defaultControlHtml.ToString(), string.Format("<span class='inline' id='{0}'></span>", errId)),
                     Environment.NewLine, script));
         }
 
