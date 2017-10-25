@@ -124,10 +124,11 @@ namespace Mvc.Controls
                 if (data) {{
                     
                    //set the height of the dropdown
-                    var space = window.innerHeight - $('#{3}').closest('.form-group').offset().top - 50;
+                    var space = window.innerHeight - $('#{3}').closest('.form-group').offset().top;
                     if(data.length * 30 > space)
-                    {{                        
-                        $('#{3}').selectmenu().selectmenu('menuWidget').css('height', space);
+                    {{        
+                        var heightManip = space > 300 ? (space * 0.85) : 300;                
+                        $('#{3}').selectmenu().selectmenu('menuWidget').css('height', heightManip);
 
                     }}
 

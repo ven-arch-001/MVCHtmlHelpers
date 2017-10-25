@@ -26,7 +26,37 @@ namespace Mvc.Web.Test.Models
 
         [Required]
         [Display(Name = "States JQ", Description = "State Desc")]
-        public string States { get; set; }
+        public string States1 { get; set; }
+
+
+
+        [Required]
+        [Display(Name = "States JQ", Description = "State Desc")]
+        public string States2 { get; set; }
+
+
+
+        [Required]
+        [Display(Name = "States JQ", Description = "State Desc")]
+        public string States3 { get; set; }
+
+
+
+        [Required]
+        [Display(Name = "States JQ", Description = "State Desc")]
+        public string States4 { get; set; }
+
+
+
+        [Required]
+        [Display(Name = "States JQ", Description = "State Desc")]
+        public string States5 { get; set; }
+
+
+
+        [Required]
+        [Display(Name = "States JQ", Description = "State Desc")]
+        public string States6 { get; set; }
 
     }
 }

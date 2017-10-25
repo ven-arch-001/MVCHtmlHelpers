@@ -107,7 +107,7 @@
 
     @Html.DropDownListJQCustom(input: new DropdownInput<AsyncDropdownModel>()
 {
-    ModelProperty = m => m.States,
+    ModelProperty = m => m.States1,
     DataUri = Url.Action("State", "MasterData"),  
     HeightPixel = 80,   
     PlaceHolder = "Please select a State",   
@@ -117,6 +117,86 @@
     HttpMethod = HttpVerb.POST,  
 
 })
+
+
+
+    @Html.DropDownListJQCustom(input: new DropdownInput<AsyncDropdownModel>()
+{
+    ModelProperty = m => m.States2,
+    DataUri = Url.Action("State", "MasterData"),
+    HeightPixel = 80,
+    PlaceHolder = "Please select a State",
+    ShowLabel = true
+}, options: new SourceCallBackOptions()
+{
+    HttpMethod = HttpVerb.POST,
+
+})
+
+
+    @Html.DropDownListJQCustom(input: new DropdownInput<AsyncDropdownModel>()
+{
+    ModelProperty = m => m.States3,
+    DataUri = Url.Action("State", "MasterData"),
+    HeightPixel = 80,
+    PlaceHolder = "Please select a State",
+    ShowLabel = true
+}, options: new SourceCallBackOptions()
+{
+    HttpMethod = HttpVerb.POST,
+
+})
+
+
+
+    @Html.DropDownListJQCustom(input: new DropdownInput<AsyncDropdownModel>()
+{
+    ModelProperty = m => m.States4,
+    DataUri = Url.Action("State", "MasterData"),
+    HeightPixel = 80,
+    PlaceHolder = "Please select a State",
+    ShowLabel = true
+}, options: new SourceCallBackOptions()
+{
+    HttpMethod = HttpVerb.POST,
+
+})
+
+
+
+    @Html.DropDownListJQCustom(input: new DropdownInput<AsyncDropdownModel>()
+{
+    ModelProperty = m => m.States5,
+    DataUri = Url.Action("State", "MasterData"),
+    HeightPixel = 80,
+    PlaceHolder = "Please select a State",
+    ShowLabel = true
+}, options: new SourceCallBackOptions()
+{
+    HttpMethod = HttpVerb.POST,
+
+})
+
+
+
+    @Html.DropDownListJQCustom(input: new DropdownInput<AsyncDropdownModel>()
+{
+    ModelProperty = m => m.States6,
+    DataUri = Url.Action("State", "MasterData"),
+    HeightPixel = 80,
+    PlaceHolder = "Please select a State",
+    ShowLabel = true
+}, options: new SourceCallBackOptions()
+{
+    HttpMethod = HttpVerb.POST,
+
+})
+
+
+
+
+
+
 </div>
 <input type="submit" value="Submit" class="btn btn-primary" />
 
