@@ -76,13 +76,15 @@
                     return 0;
                 }
                 //Check if the control type is checkbox
-
-
+                else if (this.is("input[type=checkbox]"))
+                {
+                    this.prop('checked', JSON.parse(value));
+                }
                 //check if the control is jq check box list
 
                 //Check if the control type is label
                 else if (this.is("label")) {
-                    $(this[0].id).text(val);
+                    $(this[0].id).text(value);
                     return 0;
                 }
                 else {
@@ -90,7 +92,18 @@
                 }
             }
             //getter invoked do processing
-            return originalVal.call(this);
+            {
+              if (this.is("input[type=checkbox]"))
+              {
+                  return this.is(":checked");                    
+              }
+              else
+              {
+                  return originalVal.call(this);
+              }
+
+            }
+           
         };
 
 
@@ -124,7 +137,7 @@
                     <li><a href="@Url.Action("Date", "Home")">Date</a></li>
                     <li><a href="@Url.Action("TextBox", "Home")">TextBox</a></li>
                     <li><a href="@Url.Action("Index", "DataTable")">DataTable</a></li>                     
-                    <li> &nbsp;| CheckBox</li>
+                    <li><a href="@Url.Action("Index", "CheckBox")">CheckBox</a></li>                       
                     <li> &nbsp;| CheckBox List</li>
                     <li> &nbsp;| Spell Checker</li>
                     <li> &nbsp;| Numeric</li>

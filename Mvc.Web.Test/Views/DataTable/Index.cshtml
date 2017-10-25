@@ -25,8 +25,8 @@
                 vmInclude.HideHeaders = false;
                 vmInclude.PrintScript = false;
                 vmInclude.AddButtoncolumn(new CustomButton() { Functionality = CustomButtonFunction.View, CallBackEvent = "includeView" });
-                vmInclude.AddButtoncolumn(new CustomButton() { Functionality = CustomButtonFunction.Edit, CallBackEvent = "includeView" });
-                vmInclude.AddButtoncolumn(new CustomButton() { Functionality = CustomButtonFunction.Add, CallBackEvent = "includeView", LabelText = "Add" });
+                vmInclude.AddButtoncolumn(new CustomButton() { Functionality = CustomButtonFunction.Edit, });
+                vmInclude.AddButtoncolumn(new CustomButton() { Functionality = CustomButtonFunction.Add, LabelText = "Add" });
                 vmInclude.AddButtoncolumn(new CustomButton() { Functionality = CustomButtonFunction.Custom, CallBackEvent = "customEdit", LabelText = "Quicky", HeaderText = "Custom" });
                 vmInclude.AddButtoncolumn(new CustomButton() { Functionality = CustomButtonFunction.Delete });
             }

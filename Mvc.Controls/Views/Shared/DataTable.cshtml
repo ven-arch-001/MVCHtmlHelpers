@@ -98,6 +98,16 @@
                                        IdAttr = column.Name,
                                        ShowLabel = true,
                                        LabelText = column.DisplayName,
+                                       WidthPerCent = 25,
+                                       Access = ControlAccess.Edit,
+                                   }, null)
+                                        break;
+                                    case EditControl.CheckBox:
+                                        @Html.CheckBoxCustom(new CheckBoxInput<Boolean>()
+                                   {
+                                       IdAttr = column.Name,
+                                       ShowLabel = true,
+                                       LabelText = column.DisplayName,
                                        Access = ControlAccess.Edit,
                                    }, null)
                                         break;

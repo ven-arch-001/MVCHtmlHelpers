@@ -69,9 +69,9 @@ namespace Mvc.Controls
         }};
 
         if (document.readyState != 'loading') {{
-            initTextBoxFor{0}();
+            initCheckBoxFor{0}();
         }} else {{
-            document.addEventListener('DOMContentLoaded', initTextBoxFor{0});
+            document.addEventListener('DOMContentLoaded', initCheckBoxFor{0});
         }}";
 
 
@@ -115,7 +115,9 @@ namespace Mvc.Controls
                 labelText = metadata.DisplayName ?? metadata.PropertyName.ToTitleCaseFromPascal();
             }
 
-            bool value = Helper.ParseBool(input.Value);           
+            var valueModal = ControlHelpers.GetPropStringValue(htmlHelper.ViewData.Model, input.ModelProperty);
+
+            bool value = Helper.ParseBool(valueModal);           
             
             return BuildControl(
                 htmlHelper,
@@ -202,11 +204,11 @@ namespace Mvc.Controls
             //Add the default class : form-control
             if (htmlAttributes["class"] == null)
             {
-                htmlAttributes.Add("class", "form-control");
+                htmlAttributes.Add("class", "");
             }
             else
             {
-                htmlAttributes["class"] = "form-control " + htmlAttributes["class"];
+                htmlAttributes["class"] = " " + htmlAttributes["class"];
             }
 
 
@@ -228,12 +230,9 @@ namespace Mvc.Controls
             //Add the default class : form-control
             if (htmlAttributes["style"] == null)
             {
-                htmlAttributes.Add("style", string.Format("width:{0}% !important;", widthPercent));
+                //htmlAttributes.Add("style", string.Format("width:{0}% !important;", widthPercent));
             }
-            else
-            {
-                htmlAttributes["style"] = string.Format("width:{0}% !important; ", widthPercent) + htmlAttributes["style"];
-            }
+          
 
             MvcHtmlString defaultControlHtml = new MvcHtmlString(string.Empty);
             MvcHtmlString hiddenControlHtml = new MvcHtmlString(string.Empty);
@@ -273,7 +272,7 @@ namespace Mvc.Controls
                inputId,
                value == checkedValueDefault,
                htmlAttributes);
-                    hiddenControlHtml = htmlHelper.Hidden(inputName, value);
+                    hiddenControlHtml = htmlHelper.Hidden(inputName, value == checkedValueDefault);
                     break;
             }
 

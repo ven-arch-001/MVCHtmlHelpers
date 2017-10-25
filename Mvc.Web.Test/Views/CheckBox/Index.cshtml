@@ -15,10 +15,8 @@
         @Html.CheckBoxCustom(input: new CheckBoxInput<CheckBoxVM>()
    {
        ModelProperty = m => m.CheckBox,
-       PlaceHolder = "Please select a Street",
-       
-       ShowLabel = true,
-       Access = ControlAccess.Edit
+       ShowLabel = true,       
+       Access = ControlAccess.ReadPost
    }, options: new CheckCallBackOptions()
    {       
        OnChange = "CheckBoxChange"
