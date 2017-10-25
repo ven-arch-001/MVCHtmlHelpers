@@ -5,7 +5,7 @@
 @using Mvc.Web.Test.Controllers
 
 <div class="container-fluid">
-    <div class="row-fluid">         
+    <div class="row-fluid">
         <div class="col-lg-12">
             <h2>Include</h2>
             @{
@@ -25,55 +25,108 @@
                 vmInclude.HideHeaders = false;
                 vmInclude.PrintScript = false;
                 vmInclude.AddButtoncolumn(new CustomButton() { Functionality = CustomButtonFunction.View, CallBackEvent = "includeView" });
-                vmInclude.AddButtoncolumn(new CustomButton() { Functionality = CustomButtonFunction.Edit });
-                vmInclude.AddButtoncolumn(new CustomButton() { Functionality = CustomButtonFunction.Add, LabelText = "Add" });
+                vmInclude.AddButtoncolumn(new CustomButton() { Functionality = CustomButtonFunction.Edit, CallBackEvent = "includeView" });
+                vmInclude.AddButtoncolumn(new CustomButton() { Functionality = CustomButtonFunction.Add, CallBackEvent = "includeView", LabelText = "Add" });
+                vmInclude.AddButtoncolumn(new CustomButton() { Functionality = CustomButtonFunction.Custom, CallBackEvent = "customEdit", LabelText = "Quicky", HeaderText = "Custom" });
                 vmInclude.AddButtoncolumn(new CustomButton() { Functionality = CustomButtonFunction.Delete });
             }
             @Html.Partial("DataTable", vmInclude)
         </div>
 
         @*<div class="col-lg-12">
-            <h2>Inner Join</h2>
-            @{
-                var vmInner = Html.DataTableVm("table-usersInner", (DataTableController h) => h.GetUsersInnerJoin(null));
+                <h2>Inner Join</h2>
+                @{
+                    var vmInner = Html.DataTableVm("table-usersInner", (DataTableController h) => h.GetUsersInnerJoin(null));
 
-                vmInner.UseColumnFilterPlugin = false;
-                vmInner.StateSave = false;
+                    vmInner.UseColumnFilterPlugin = false;
+                    vmInner.StateSave = false;
 
-                vmInner.PageLength = 5; //... and set a default
-                vmInner.ShowPageSizes = false;
-                vmInner.ColVis = false;
-                vmInner.ShowFilterInput = false;
-                vmInner.Filter = true;
-                vmInner.HideHeaders = true;
-                vmInner.TableTools = false;
-                vmInner.HideHeaders = false;
-                vmInner.AddButtoncolumn(new CustomButton() { Functionality = CustomButtonFunction.View });
-            }
-            @Html.Partial("DataTable", vmInner)
-        </div>*@
+                    vmInner.PageLength = 5; //... and set a default
+                    vmInner.ShowPageSizes = false;
+                    vmInner.ColVis = false;
+                    vmInner.ShowFilterInput = false;
+                    vmInner.Filter = true;
+                    vmInner.HideHeaders = true;
+                    vmInner.TableTools = false;
+                    vmInner.HideHeaders = false;
+                    vmInner.AddButtoncolumn(new CustomButton() { Functionality = CustomButtonFunction.View });
+                }
+                @Html.Partial("DataTable", vmInner)
+            </div>*@
 
 
         @*<div class="col-lg-12">
-            <h2>Outer Join</h2>
-            @{
-                var vmOuter = Html.DataTableVm("table-usersOuter", (DataTableController h) => h.GetUsersOuterJoin(null));
+                <h2>Outer Join</h2>
+                @{
+                    var vmOuter = Html.DataTableVm("table-usersOuter", (DataTableController h) => h.GetUsersOuterJoin(null));
 
-                vmOuter.UseColumnFilterPlugin = false;
-                vmOuter.StateSave = true;
+                    vmOuter.UseColumnFilterPlugin = false;
+                    vmOuter.StateSave = true;
 
-                vmOuter.PageLength = 5; //... and set a default
-                vmOuter.ShowPageSizes = false;
-                vmOuter.ColVis = false;
-                vmOuter.ShowFilterInput = false;
-                vmOuter.Filter = true;
-                vmOuter.HideHeaders = true;
-                vmOuter.TableTools = false;
-                vmOuter.HideHeaders = false;
-            }
-            @Html.Partial("DataTable", vmOuter)
-        </div>*@
+                    vmOuter.PageLength = 5; //... and set a default
+                    vmOuter.ShowPageSizes = false;
+                    vmOuter.ColVis = false;
+                    vmOuter.ShowFilterInput = false;
+                    vmOuter.Filter = true;
+                    vmOuter.HideHeaders = true;
+                    vmOuter.TableTools = false;
+                    vmOuter.HideHeaders = false;
+                }
+                @Html.Partial("DataTable", vmOuter)
+            </div>*@
     </div>
+</div>
+
+
+<div class="modal fade" id="divCustomEdit" role="dialog">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h3 class="modal-title">Quick Edit</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="row dataTable">
+                        <div class="col-md-12">
+                            @Html.TextBoxCustom(new TextInput<string>()
+                       {
+                           IdAttr = "LastNameCus",
+                           LabelText = "Last Name",
+                           Access = ControlAccess.Edit,
+                           ShowLabel = true
+                       }, null)
+                        </div>
+                        <div class="col-md-12">
+                            @Html.DropDownListJQCustom(new DropdownInput<string>()
+                   {
+                       IdAttr = "StateIdCus",
+                       DataUri = "MasterData/State",
+                       LabelText = "State",
+                       Access = ControlAccess.Edit,
+                       ShowLabel = true,
+
+                   }, null)
+                        </div>
+                        <div class="col-md-12">
+                            @Html.DateCustom(new DateInput<DateTime?>()
+                   {
+                       IdAttr = "BirthDateCus",
+                       ShowLabel = true,
+                       LabelText = "Birth Date",
+                       Access = ControlAccess.Edit,
+                   }, null)
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">                  
+                    <button type="button"  data-dismiss="modal" class="btn btn-success" onclick="SaveCustom()">Save</button>
+                    <button type="button" data-dismiss="modal" class="btn btn-primary">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <script>
@@ -84,4 +137,71 @@
         });
         alert('custom function called.<br/><br/><br/><b>Data Received:</b><br/>' + html);
     };
+
+    var customEditData = {};
+    function customEdit(e) {
+        var customId = "Cus";
+        var modal = $("#divCustomEdit");
+        if (modal == null || modal.length == 0)
+            return;
+        //Loop through the controls on the edit form and assign the values
+        var data = e || {};
+        customEditData = data;
+
+        $.each(data, function(key, val) {
+            //display the key and value pair
+            if(modal.find("#" + key + customId).length > 0)
+            {
+                modal.find("#" + key + customId).val(val);
+            }
+        });
+
+        modal.modal({
+            show: true,
+            keyboard: false,
+            backdrop: 'static'
+        });
+
+    }
+
+    function SaveCustom()
+    {
+        var customId = "Cus";
+        var jsonToSend = customEditData;
+        var modal = $("#divCustomEdit");
+        var table = $('#table-usersInclude').DataTable();
+
+        //Read the data from the controls
+        $.each(jsonToSend, function(key, val) {
+            //display the key and value pair
+            if(modal.find("#" + key + customId).length > 0)
+            {
+                jsonToSend[key] = modal.find("#" + key + customId).val();
+            }
+        });
+
+
+        jsonToSend.RowFunction = @((int)CustomButtonFunction.Custom);
+        var url = 'DataTable/PostData';
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: jsonToSend,
+            cache : false,
+            dataType: 'json',
+            success: function()
+            {
+                modal.modal("hide");
+                table.ajax.reload( null, false );
+            },
+            error: function(err)
+            {
+
+            }
+        });
+
+
+
+
+    }
 </script>

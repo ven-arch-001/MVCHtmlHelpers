@@ -396,7 +396,7 @@ namespace Mvc.Controls.DataTable.Infrastructure
             Func<bool, bool> isFalse = x => x == false;
             Func<string, bool> isNonEmptyString = x => !string.IsNullOrEmpty(x);
 
-            var defs = new List<dynamic>();
+            var defs = new List<JObject>();
 
 
             int colIndex = 0;
@@ -449,28 +449,45 @@ namespace Mvc.Controls.DataTable.Infrastructure
             //The target will start from -1 (right side) and hence the custom buttons have to be added first.
             //the View button will be added at the end
 
-            buttons.Where(t => t.Functionality == CustomButtonFunction.Custom)
-                .ToList().ForEach(t =>
+            ////buttons.Where(t => t.Functionality == CustomButtonFunction.Custom)
+            ////    .ToList().ForEach(t =>
+            ////    {
+            ////        defs.Add(ConvertColumnDefsToButton(t, ++customTarget));
+            ////    });
+            ////var customButton = buttons.Where(t => t.Functionality == CustomButtonFunction.Delete).FirstOrDefault();
+            ////if (customButton != null)
+            ////{
+            ////    defs.Add(ConvertColumnDefsToButton(customButton, ++customTarget));
+            ////}
+
+            ////customButton = buttons.Where(t => t.Functionality == CustomButtonFunction.Edit).FirstOrDefault();
+            ////if (customButton != null)
+            ////{
+            ////    defs.Add(ConvertColumnDefsToButton(customButton, ++customTarget));
+            ////}
+
+            ////customButton = buttons.Where(t => t.Functionality == CustomButtonFunction.View).FirstOrDefault();
+            ////if (customButton != null)
+            ////{
+            ////    defs.Add(ConvertColumnDefsToButton(customButton, ++customTarget));
+            ////}
+
+            var defsbuttons = new List<JObject>();
+
+            for (int ind = buttons.Count() - 1; ind >= 0; ind--)
+            {
+                if (buttons.ElementAt(ind).Functionality == CustomButtonFunction.Add || buttons.ElementAt(ind).Functionality == CustomButtonFunction.None)
                 {
-                    defs.Add(ConvertColumnDefsToButton(t, ++customTarget));
-                });
-            var customButton = buttons.Where(t => t.Functionality == CustomButtonFunction.Delete).FirstOrDefault();
-            if (customButton != null)
-            {
-                defs.Add(ConvertColumnDefsToButton(customButton, ++customTarget));
+                    continue;
+                }
+
+                defsbuttons.Add(ConvertColumnDefsToButton(buttons.ElementAt(ind), ++customTarget));
             }
 
-            customButton = buttons.Where(t => t.Functionality == CustomButtonFunction.Edit).FirstOrDefault();
-            if (customButton != null)
-            {
-                defs.Add(ConvertColumnDefsToButton(customButton, ++customTarget));
-            }
 
-            customButton = buttons.Where(t => t.Functionality == CustomButtonFunction.View).FirstOrDefault();
-            if (customButton != null)
-            {
-                defs.Add(ConvertColumnDefsToButton(customButton, ++customTarget));
-            }
+
+            defs.AddRange(defsbuttons);
+
 
             if (defs.Count > 0)
                 return JsonConvert.SerializeObject(defs);
@@ -621,6 +638,12 @@ namespace Mvc.Controls.DataTable.Infrastructure
                     {
                         throw new Exception("Please set the AjaxPostUrl for Add/Edit/Delete row functionality");
                     }
+                    //Check that this is the only one
+                    if (this.CustomButtons.Where(tt => tt.Functionality == button.Functionality).Count() > 0)
+                    {
+                        throw new Exception("Default button function already added. Cannot be duplicated");
+                    }
+
                     break;
                 case CustomButtonFunction.Custom:
                     if (string.IsNullOrEmpty(button.CallBackEvent))
@@ -636,11 +659,12 @@ namespace Mvc.Controls.DataTable.Infrastructure
             {
                 button.LabelText = string.IsNullOrEmpty(button.LabelText) ? button.Functionality.ToString() : button.LabelText;
             }
-           
+
 
             //Update the Column and Button list
             switch (button.Functionality)
             {
+                case CustomButtonFunction.View:
                 case CustomButtonFunction.Edit:
                 case CustomButtonFunction.Delete:
                 case CustomButtonFunction.Custom:

@@ -171,8 +171,9 @@ namespace Mvc.Web.Test.Controllers
                     db.Entry(dataEF).State = System.Data.Entity.EntityState.Modified;
                     break;
                 case CustomButtonFunction.Custom:
-                    throw new NotImplementedException("Custom not implmented");
-                    
+                    db.Users.Add(dataEF);
+                    db.Entry(dataEF).State = System.Data.Entity.EntityState.Modified;
+                    break;
                 default:
                     throw new Exception("Row Function not set");
                   
