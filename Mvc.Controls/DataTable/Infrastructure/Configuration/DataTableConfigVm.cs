@@ -447,30 +447,7 @@ namespace Mvc.Controls.DataTable.Infrastructure
             int customTarget = 0;
             //Append Custom button columns starting in the order View/Edit/Delete/Custom buttons.
             //The target will start from -1 (right side) and hence the custom buttons have to be added first.
-            //the View button will be added at the end
-
-            ////buttons.Where(t => t.Functionality == CustomButtonFunction.Custom)
-            ////    .ToList().ForEach(t =>
-            ////    {
-            ////        defs.Add(ConvertColumnDefsToButton(t, ++customTarget));
-            ////    });
-            ////var customButton = buttons.Where(t => t.Functionality == CustomButtonFunction.Delete).FirstOrDefault();
-            ////if (customButton != null)
-            ////{
-            ////    defs.Add(ConvertColumnDefsToButton(customButton, ++customTarget));
-            ////}
-
-            ////customButton = buttons.Where(t => t.Functionality == CustomButtonFunction.Edit).FirstOrDefault();
-            ////if (customButton != null)
-            ////{
-            ////    defs.Add(ConvertColumnDefsToButton(customButton, ++customTarget));
-            ////}
-
-            ////customButton = buttons.Where(t => t.Functionality == CustomButtonFunction.View).FirstOrDefault();
-            ////if (customButton != null)
-            ////{
-            ////    defs.Add(ConvertColumnDefsToButton(customButton, ++customTarget));
-            ////}
+            //the View button will be added at the end         
 
             var defsbuttons = new List<JObject>();
 
