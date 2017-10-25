@@ -124,7 +124,8 @@ namespace Mvc.Controls
                 if (data) {{
                     
                    //set the height of the dropdown
-                    var space = window.innerHeight - $('#{3}').closest('.form-group').offset().top;
+                    //var space = window.innerHeight - $('#{3}').closest('.form-group').offset().top;
+                    var space = window.innerHeight - $('#{3}').closest('div').offset().top;
                     if(data.length * 30 > space)
                     {{        
                         var heightManip = space > 300 ? (space * 0.85) : 300;                

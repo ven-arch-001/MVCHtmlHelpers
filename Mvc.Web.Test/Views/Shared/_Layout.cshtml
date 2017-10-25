@@ -63,18 +63,18 @@
                 //Check if the control type is jq Datepicker
                 if (this.data("datepicker") != null && !isNaN(Date.parse(value))) {
 
-                    this.datepicker("setDate", new Date(Date.parse(value)));
+                    //$("#" + this.data("datepicker").id).datepicker().datepicker("setDate", new Date(Date.parse(value)));
+                    var date = new Date(Date.parse(value));
+                    return originalVal.call(this, date.format());
                 }
-
-
                 //Check if the control type is jq Dropdown, call refresh() after data bind
                 else if (this.data("selectmenu") != null) {
 
-                    this.val(preselectedValue);
-                    this.selectmenu('refresh');
-                    this.trigger('selectmenuchange');
+                    $("#" + this.data("selectmenu").id).val(preselectedValue);
+                    $("#" + this.data("selectmenu").id).selectmenu('refresh');
+                    $("#" + this.data("selectmenu").id).trigger('selectmenuchange');
+                    return 0;
                 }
-
                 //Check if the control type is checkbox
 
 
@@ -82,15 +82,24 @@
 
                 //Check if the control type is label
                 else if (this.is("label")) {
-                    $(this).text(val);
+                    $(this[0].id).text(val);
+                    return 0;
                 }
-
-                return originalVal.call(this, value);
+                else {
+                    return originalVal.call(this, value);
+                }
             }
             //getter invoked do processing
             return originalVal.call(this);
         };
 
+
+        Date.prototype.format = function () {
+            //MMddYYYY
+            return ("0" + (this.getMonth() + 1)).slice(-2) +
+            "/" + ("0" + this.getDate()).slice(-2) +
+            "/" + this.getFullYear();
+        }
 
     </script>
 </head>

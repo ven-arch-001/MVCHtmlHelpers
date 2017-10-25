@@ -32,7 +32,7 @@
             @Html.Partial("DataTable", vmInclude)
         </div>
 
-        <div class="col-lg-12">
+        @*<div class="col-lg-12">
             <h2>Inner Join</h2>
             @{
                 var vmInner = Html.DataTableVm("table-usersInner", (DataTableController h) => h.GetUsersInnerJoin(null));
@@ -51,7 +51,7 @@
                 vmInner.AddButtoncolumn(new CustomButton() { Functionality = CustomButtonFunction.View });
             }
             @Html.Partial("DataTable", vmInner)
-        </div>
+        </div>*@
 
 
         @*<div class="col-lg-12">
